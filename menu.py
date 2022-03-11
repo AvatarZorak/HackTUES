@@ -1,72 +1,53 @@
-import pygame 
-import sys 
-  
-  
-# initializing the constructor 
-pygame.init() 
-  
-# screen resolution 
-res = (720,720) 
-  
-# opens up a window 
-screen = pygame.display.set_mode(res) 
-  
-# white color 
-color = (255,255,255) 
-  
-# light shade of the button 
-color_light = (170,170,170) 
-  
-# dark shade of the button 
-color_dark = (100,100,100) 
-  
-# stores the width of the 
-# screen into a variable 
-width = screen.get_width() 
-  
-# stores the height of the 
-# screen into a variable 
-height = screen.get_height() 
-  
-# defining a font 
-smallfont = pygame.font.SysFont('Corbel',35) 
-  
-# rendering a text written in 
-# this font 
-text = smallfont.render('quit' , True , color) 
-  
-while True: 
-      
-    for ev in pygame.event.get(): 
-          
-        if ev.type == pygame.QUIT: 
-            pygame.quit() 
-              
-        #checks if a mouse is clicked 
-        if ev.type == pygame.MOUSEBUTTONDOWN: 
-              
-            #if the mouse is clicked on the 
-            # button the game is terminated 
-            if width/2 <= mouse[0] <= width/2+140 and height/2 <= mouse[1] <= height/2+40: 
-                pygame.quit() 
-                  
-    # fills the screen with a color 
-    screen.fill((60,25,60)) 
-      
-    # stores the (x,y) coordinates into 
-    # the variable as a tuple 
-    mouse = pygame.mouse.get_pos() 
-      
-    # if mouse is hovered on a button it 
-    # changes to lighter shade 
-    if width/2 <= mouse[0] <= width/2+140 and height/2 <= mouse[1] <= height/2+40: 
-        pygame.draw.rect(screen,color_light,[width/2,height/2,140,40]) 
-          
-    else: 
-        pygame.draw.rect(screen,color_dark,[width/2,height/2,140,40]) 
-      
-    # superimposing the text onto our button 
-    screen.blit(text , (width/2+50,height/2)) 
-      
-    # updates the frames of the game 
-    pygame.display.update() 
+from sys import exit
+import pygame
+
+pygame.init()
+
+screen_width, screen_height = 1280, 720
+screen = pygame.display.set_mode((screen_width, screen_height))
+screen.blit(pygame.transform.scale(pygame.image.load("assets/images/menu_background.png"), (screen_width, screen_height)), (0, 0))
+
+class Button(pygame.sprite.Sprite):
+    def __init__(self, x, y, image_name):
+        super().__init__()
+        self.x = x
+        self.y = y
+        self.image_name = image_name
+        self.image = pygame.image.load(f"{self.image_name}.png")
+
+    def change_button(self):
+        mouse = pygame.mouse.get_pos()
+        if self.x <= mouse[0] <= self.x + self.image.get_width() and self.y <= mouse[1] <= self.y  + self.image.get_height():
+            self.image = pygame.image.load(f"{self.image_name}_pressed.png")
+            screen.blit(self.image, (self.x, self.y))
+        else:
+            self.image = pygame.image.load(f"{self.image_name}.png")
+            screen.blit(self.image, (self.x, self.y))
+        
+    def check_clicked(self):
+        mouse = pygame.mouse.get_pos()
+        if self.x <= mouse[0] <= self.x + self.image.get_width() and self.y <= mouse[1] <= self.y  + self.image.get_height():
+            return True
+
+play_button = Button(screen_width/2 - 50, screen_height/2, "assets/images/play_button")
+quit_button = Button(screen_width/2 - 50, screen_height/2+100, "assets/images/quit_button")
+
+def menu():
+    mouse = pygame.mouse.get_pos()
+    
+    screen.blit(pygame.transform.scale(pygame.image.load("assets/images/menu_background.png"), (screen_width, screen_height)), (0, 0))
+    play_button.change_button()
+    quit_button.change_button()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            exit(0)
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if play_button.check_clicked():
+                return False
+
+            if quit_button.check_clicked():
+                exit(0)
+    pygame.display.update()
+    return True

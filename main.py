@@ -1,6 +1,6 @@
 #libraries
-from re import S
 import pygame
+from menu import Button, menu
 from sys import exit
 
 #init pygame
@@ -108,7 +108,7 @@ class Background(pygame.sprite.Sprite):
 class Object(pygame.sprite.Sprite):
     def __init__(self, design, x, y, height, width): 
         super().__init__()
-        self.x = x #x coordinate
+        self.x = x
         self.y = y
         self.height = height
         self.width = width
@@ -147,28 +147,6 @@ class Object(pygame.sprite.Sprite):
         col = False
         try_move = []
 
-class Button(pygame.sprite.Sprite):
-    def __init__(self, x, y, image_name):
-        super().__init__()
-        self.x = x
-        self.y = y
-        self.image_name = image_name
-        self.image = pygame.image.load(f"{self.image_name}.png")
-
-    def change_button(self):
-        mouse = pygame.mouse.get_pos()
-        if self.x <= mouse[0] <= self.x + self.image.get_width() and self.y <= mouse[1] <= self.y  + self.image.get_height():
-            self.image = pygame.image.load(f"{self.image_name}_pressed.png")
-            screen.blit(self.image, (self.x, self.y))
-        else:
-            self.image = pygame.image.load(f"{self.image_name}.png")
-            screen.blit(self.image, (self.x, self.y))
-        
-    def check_clicked(self):
-        mouse = pygame.mouse.get_pos()
-        if self.x <= mouse[0] <= self.x + self.image.get_width() and self.y <= mouse[1] <= self.y  + self.image.get_height():
-            return True
-
 #definition of objects
 player = pygame.sprite.GroupSingle()
 player.add(Player())
@@ -188,13 +166,8 @@ wall_up.add(Object("Assets/Images/wall_up.png", 500 ,-300, 60, 1000))
 wall_down = pygame.sprite.GroupSingle()
 wall_down.add(Object("Assets/Images/wall_down.png", 600 ,600, 60, 1000))
 
-shkaf = pygame.sprite.GroupSingle()
-shkaf.add(Object("Assets/Images/shkaf.png", 340 ,-245, 90, 300))   
-
-             
-
-play_button = Button(screen_width/2 - 50, screen_height/2, "assets/images/play_button")
-quit_button = Button(screen_width/2 - 50, screen_height/2+100, "assets/images/quit_button")
+shelf = pygame.sprite.GroupSingle()
+shelf.add(Object("Assets/Images/shelf.png", 340 ,-245, 90, 300))   
 
 #functions
 def main():
@@ -204,37 +177,16 @@ def main():
     while run:
         clock.tick(FPS)
         
-        if main_menu == True:
-            mouse = pygame.mouse.get_pos()
-
-            screen.blit(pygame.transform.scale(pygame.image.load("assets/images/menu_background.png"), (screen_width, screen_height)), (0, 0))
-
-            play_button.change_button()
-            quit_button.change_button()
-
+        if main_menu:
+            main_menu = menu()
+        else:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if play_button.check_clicked():
-                        print("joe mama")
-                        main_menu = False
-
-                    if quit_button.check_clicked():
-                        run = False
-            pygame.display.update()
-        elif main_menu == False:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     print(pygame.mouse.get_pos())
             draw_game()
             pygame.display.update()
-
-
 
     pygame.quit()
 
@@ -248,7 +200,7 @@ def reversemove(sprite):
 def dontmove(self):
     reversemove(desk.sprite)
     reversemove(chair.sprite)
-    reversemove(shkaf.sprite)
+    reversemove(shelf.sprite)
     reversemove(floor.sprite)
     reversemove(wall_up.sprite)
     reversemove(wall_down.sprite)
@@ -263,7 +215,7 @@ def draw_game():
     wall_down.draw(screen)
     desk.draw(screen)
     chair.draw(screen)
-    shkaf.draw(screen)
+    shelf.draw(screen)
     
     
     player.update()
@@ -271,9 +223,7 @@ def draw_game():
     wall_down.update()
     desk.update()
     chair.update()
-    shkaf.update()
-    
-    
+    shelf.update()
     
     floor.update()
 
