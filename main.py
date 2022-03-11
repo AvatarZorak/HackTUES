@@ -1,5 +1,7 @@
 #libraries
+from re import S
 import pygame
+from sys import exit
 
 #init pygame
 pygame.init()
@@ -13,6 +15,10 @@ object_scale = 1.5
 #global variables
 col = False
 try_move = []
+
+#text properties
+font_buttons = pygame.font.SysFont('Ariel', 35)
+text = font_buttons.render("Play", True, (255, 255, 255))
 
 #ticks
 FPS = 60
@@ -141,6 +147,28 @@ class Object(pygame.sprite.Sprite):
         col = False
         try_move = []
 
+class Button(pygame.sprite.Sprite):
+    def __init__(self, x, y, image_name):
+        super().__init__()
+        self.x = x
+        self.y = y
+        self.image_name = image_name
+        self.image = pygame.image.load(f"{self.image_name}.png")
+
+    def change_button(self):
+        mouse = pygame.mouse.get_pos()
+        if self.x <= mouse[0] <= self.x + self.image.get_width() and self.y <= mouse[1] <= self.y  + self.image.get_height():
+            self.image = pygame.image.load(f"{self.image_name}_pressed.png")
+            screen.blit(self.image, (self.x, self.y))
+        else:
+            self.image = pygame.image.load(f"{self.image_name}.png")
+            screen.blit(self.image, (self.x, self.y))
+        
+    def check_clicked(self):
+        mouse = pygame.mouse.get_pos()
+        if self.x <= mouse[0] <= self.x + self.image.get_width() and self.y <= mouse[1] <= self.y  + self.image.get_height():
+            return True
+
 #definition of objects
 player = pygame.sprite.GroupSingle()
 player.add(Player())
@@ -165,20 +193,48 @@ shkaf.add(Object("Assets/Images/shkaf.png", 340 ,-245, 90, 300))
 
              
 
+play_button = Button(screen_width/2 - 50, screen_height/2, "assets/images/play_button")
+quit_button = Button(screen_width/2 - 50, screen_height/2+100, "assets/images/quit_button")
 
 #functions
 def main():
     run = True
+    main_menu = True
 
     while run:
         clock.tick(FPS)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                print(pygame.mouse.get_pos())
-        draw()
-        pygame.display.update()
+        
+        if main_menu == True:
+            mouse = pygame.mouse.get_pos()
+
+            screen.blit(pygame.transform.scale(pygame.image.load("assets/images/menu_background.png"), (screen_width, screen_height)), (0, 0))
+
+            play_button.change_button()
+            quit_button.change_button()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if play_button.check_clicked():
+                        print("joe mama")
+                        main_menu = False
+
+                    if quit_button.check_clicked():
+                        run = False
+            pygame.display.update()
+        elif main_menu == False:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    print(pygame.mouse.get_pos())
+            draw_game()
+            pygame.display.update()
+
+
 
     pygame.quit()
 
@@ -198,7 +254,7 @@ def dontmove(self):
     reversemove(wall_down.sprite)
 
 #display
-def draw():
+def draw_game():
     screen.fill((0, 0, 0))
     
     floor.draw(screen)
