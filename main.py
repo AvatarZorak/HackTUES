@@ -108,7 +108,7 @@ class Background(pygame.sprite.Sprite):
 class Object(pygame.sprite.Sprite):
     def __init__(self, design, x, y, height, width): 
         super().__init__()
-        self.x = x
+        self.x = x #x coordinate
         self.y = y
         self.height = height
         self.width = width
