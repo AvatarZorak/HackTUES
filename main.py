@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.direction = 'L'
-        self.image = pygame.image.load('Player\player_standingL.png').convert_alpha()
+        self.image = pygame.image.load('assets\images\player_standing.png').convert_alpha()
         self.player_index = 0
         self.rect = self.image.get_rect(center = (500, 300))
 
@@ -37,15 +37,15 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         
         if self.direction == 'L':
-            player_stand = pygame.image.load('Player\player_standingL.png').convert_alpha()
-            player_walk1 = pygame.image.load('Player\player_walk_1L.png').convert_alpha()
-            player_walk2 = pygame.image.load('Player\player_walk_2L.png').convert_alpha()
+            player_stand = pygame.transform.flip(pygame.image.load('assets\images\player_standing.png').convert_alpha(), True, False)
+            player_walk1 = pygame.transform.flip(pygame.image.load('assets\images\player_walk_1.png').convert_alpha(), True, False)
+            player_walk2 = pygame.transform.flip(pygame.image.load('assets\images\player_walk_2.png').convert_alpha(), True, False)
             player_walk = [player_walk1, player_walk2]
             self.image = player_stand
         else:
-            player_stand = pygame.image.load('Player\player_standingR.png').convert_alpha()
-            player_walk1 = pygame.image.load('Player\player_walk_1R.png').convert_alpha()
-            player_walk2 = pygame.image.load('Player\player_walk_2R.png').convert_alpha()
+            player_stand = pygame.image.load('assets\images\player_standing.png').convert_alpha()
+            player_walk1 = pygame.image.load('assets\images\player_walk_1.png').convert_alpha()
+            player_walk2 = pygame.image.load('assets\images\player_walk_2.png').convert_alpha()
             player_walk = [player_walk1, player_walk2]
             self.image = player_stand
             
@@ -67,7 +67,7 @@ class Player(pygame.sprite.Sprite):
 class Background(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load('floor.png').convert_alpha()
+        self.image = pygame.image.load('assets/images/floor.png').convert_alpha()
         self.rect = self.image.get_rect(center = (500, 300))
         
     def movement(self):
@@ -121,7 +121,7 @@ floor = pygame.sprite.GroupSingle()
 floor.add(Background())
 
 chair = pygame.sprite.GroupSingle()
-chair.add(Object("object.png"))        
+chair.add(Object("assets\images\object.png"))        
 
 
 #functions
