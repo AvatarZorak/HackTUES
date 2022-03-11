@@ -8,7 +8,7 @@ pygame.init()
 
 #constants
 screen_width, screen_height = 1280, 720
-scale = 2
+scale = 0.75
 background_scale = 3.5
 object_scale = 1.5
 
@@ -33,7 +33,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.direction = 'L'
-        self.image = pygame.image.load('Assets/Images/Player/Player_standing.png').convert_alpha()
+        self.image = pygame.image.load('Assets/Images/player/sprite.png').convert_alpha()
         self.image = pygame.transform.scale(self.image,(self.image.get_width()*scale, self.image.get_height()*scale))
         self.player_index = 0.0
         self.rect = self.image.get_rect(center = (screen_width/2, screen_height/2))
@@ -41,8 +41,8 @@ class Player(pygame.sprite.Sprite):
         self.height = self.image.get_height()*0.4
 
     def walk(self, player_walk):
-        self.player_index += 0.15
-        if self.player_index >= 2:
+        self.player_index += 0.3
+        if self.player_index >= 8:
             self.player_index = 0
         self.image = player_walk[int(self.player_index)]
 
@@ -51,17 +51,29 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         
         if self.direction == 'L':
-            player_stand = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/Player/Player_standing.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
-            player_walk1 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/Player/Player_walk_1.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
-            player_walk2 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/Player/Player_walk_2.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
-            player_walk = [player_walk1, player_walk2]
+            player_stand = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
+            player_walk1 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_0.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
+            player_walk2 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_1.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
+            player_walk3 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_2.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
+            player_walk4 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_3.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
+            player_walk5 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_4.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
+            player_walk6 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_5.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
+            player_walk7 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_6.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
+            player_walk8 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_7.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
+            player_walk = [player_walk1, player_walk2, player_walk3, player_walk4, player_walk5, player_walk6, player_walk7, player_walk8]
             self.image = player_stand
             
         else:
-            player_stand = pygame.transform.scale(pygame.image.load('Assets/Images/Player/Player_standing.png').convert_alpha(), (self.width * scale, self.height * scale))
-            player_walk1 = pygame.transform.scale(pygame.image.load('Assets/Images/Player/Player_walk_1.png').convert_alpha(), (self.width * scale, self.height * scale))
-            player_walk2 = pygame.transform.scale(pygame.image.load('Assets/Images/Player/Player_walk_2.png').convert_alpha(), (self.width * scale, self.height * scale))
-            player_walk = [player_walk1, player_walk2]
+            player_stand = pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite.png').convert_alpha(), (self.width * scale, self.height * scale))
+            player_walk1 = pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_0.png').convert_alpha(), (self.width * scale, self.height * scale))
+            player_walk2 = pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_1.png').convert_alpha(), (self.width * scale, self.height * scale))
+            player_walk3 = pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_2.png').convert_alpha(), (self.width * scale, self.height * scale))
+            player_walk4 = pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_3.png').convert_alpha(), (self.width * scale, self.height * scale))
+            player_walk5 = pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_4.png').convert_alpha(), (self.width * scale, self.height * scale))
+            player_walk6 = pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_5.png').convert_alpha(), (self.width * scale, self.height * scale))
+            player_walk7 = pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_6.png').convert_alpha(), (self.width * scale, self.height * scale))
+            player_walk8 = pygame.transform.scale(pygame.image.load('Assets/Images/player/sprite_7.png').convert_alpha(), (self.width * scale, self.height * scale))
+            player_walk = [player_walk1, player_walk2, player_walk3, player_walk4, player_walk5, player_walk6, player_walk7, player_walk8]
             self.image = player_stand
             
         if keys[pygame.K_a]:
@@ -82,7 +94,7 @@ class Player(pygame.sprite.Sprite):
 class Background(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load('Assets/Images/Floor.png').convert_alpha()
+        self.image = pygame.image.load('Assets/Images/backgrounds/Floor.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (screen_width*background_scale, screen_height*background_scale))
         self.rect = self.image.get_rect(center = (screen_width/2, screen_height/2))
         
@@ -147,6 +159,16 @@ class Object(pygame.sprite.Sprite):
         col = False
         try_move = []
 
+class Paper(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.x = x
+        self.y = y
+        self.image = pygame.transform.scale(pygame.image.load("assets/images/papers/paper.png"), (40, 40))
+        self.rect = self.image.get_rect(center = (screen_width/2 + 150, screen_height/2 - 200))
+        
+
+
 #definition of objects
 player = pygame.sprite.GroupSingle()
 player.add(Player())
@@ -154,20 +176,24 @@ player.add(Player())
 floor = pygame.sprite.GroupSingle()
 floor.add(Background())
 
+paper = pygame.sprite.GroupSingle()
+paper.add(Paper(450, -50))
+
+
 desk = pygame.sprite.GroupSingle()
-desk.add(Object("Assets/Images/desk.png", 490, -50, 80, 110)) 
+desk.add(Object("Assets/Images/objects/desk.png", 490, -50, 80, 110)) 
 
 chair = pygame.sprite.GroupSingle()
-chair.add(Object("Assets/Images/Object.png", 840 ,-55, 60, 40))   
+chair.add(Object("Assets/Images/objects/Object.png", 840 ,-55, 60, 40))   
 
 wall_up = pygame.sprite.GroupSingle()
-wall_up.add(Object("Assets/Images/wall_up.png", 500 ,-300, 60, 1000))
+wall_up.add(Object("Assets/Images/objects/wall_up.png", 500 ,-300, 60, 1000))
 
 wall_down = pygame.sprite.GroupSingle()
-wall_down.add(Object("Assets/Images/wall_down.png", 600 ,600, 60, 1000))
+wall_down.add(Object("Assets/Images/objects/wall_down.png", 600 ,600, 60, 1000))
 
 shelf = pygame.sprite.GroupSingle()
-shelf.add(Object("Assets/Images/shelf.png", 340 ,-245, 90, 300))   
+shelf.add(Object("Assets/Images/objects/shelf.png", 340 ,-245, 90, 300))   
 
 #functions
 def main():
@@ -216,8 +242,9 @@ def draw_game():
     desk.draw(screen)
     chair.draw(screen)
     shelf.draw(screen)
-    
-    
+    paper.draw(screen)
+
+    paper.update()
     player.update()
     wall_up.update()
     wall_down.update()
