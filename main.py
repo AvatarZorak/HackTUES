@@ -7,6 +7,7 @@ pygame.init()
 #constants
 screen_width, screen_height = 1280, 720
 scale = 2 
+background_scale = 1.5
 
 #ticks
 FPS = 60
@@ -71,7 +72,7 @@ class Background(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load('Assets/Images/Floor.png').convert_alpha()
-        self.image = pygame.transform.scale(self.image, (screen_width*3,screen_height*3))
+        self.image = pygame.transform.scale(self.image, (screen_width*background_scale, screen_height*background_scale))
         self.rect = self.image.get_rect(center = (screen_width/2, screen_height/2))
         
     def movement(self):
@@ -90,11 +91,16 @@ class Background(pygame.sprite.Sprite):
         
         
 class Object(pygame.sprite.Sprite):
-    def __init__(self, design):
+    def __init__(self, design, x, y, height, width): 
         super().__init__()
+        self.x = x
+        self.y = y
+        self.height = height
+        self.width = width
         self.image = pygame.image.load(design).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (self.image.get_width()*scale, self.image.get_height()*scale))
-        self.rect = self.image.get_rect(center = (800, 100))
+        self.image = pygame.transform.scale(self.image, (self.width*scale, self.height*scale))
+        self.rect = self.image.get_rect(center = (self.x, self.y))
+       
         
     def movement(self):
         keys = pygame.key.get_pressed()
@@ -106,10 +112,11 @@ class Object(pygame.sprite.Sprite):
             self.rect.x -= 4
         if keys[pygame.K_s] and floor.sprite.rect.bottom > screen_height - screen_height/2:
             self.rect.y -= 4
-            
+        
     def update(self):
         self.movement()
-        
+    
+
 #definition of objects
 player = pygame.sprite.GroupSingle()
 player.add(Player())
@@ -117,8 +124,11 @@ player.add(Player())
 floor = pygame.sprite.GroupSingle()
 floor.add(Background())
 
+desk = pygame.sprite.GroupSingle()
+desk.add(Object("Assets/Images/desk.png", 990, -100, 80, 110)) 
+
 chair = pygame.sprite.GroupSingle()
-chair.add(Object("Assets/Images/Object.png"))        
+chair.add(Object("Assets/Images/Object.png", 940 ,-75, 60, 40))           
 
 
 #functions
@@ -134,6 +144,8 @@ def main():
                 print(pygame.mouse.get_pos())
         draw()
         pygame.display.update()
+        
+        print("x na stol", chair.sprite.rect.x)
 
     pygame.quit()
 
@@ -146,6 +158,9 @@ def draw():
 
     player.draw(screen)
     player.update()
+    
+    desk.draw(screen)
+    desk.update()
     
     chair.draw(screen)
     chair.update()
