@@ -6,8 +6,12 @@ pygame.init()
 
 #constants
 screen_width, screen_height = 1280, 720
-scale = 2 
+scale = 2
 background_scale = 1.5
+object_scale = 1.5
+
+#global variables
+col = 0
 
 #ticks
 FPS = 60
@@ -76,19 +80,31 @@ class Background(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = (screen_width/2, screen_height/2))
         
     def movement(self):
+        global collision
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a] and self.rect.left < screen_width/2:
             self.rect.x += 4
+            if col:
+                self.rect.x -= 4
+                return
         if keys[pygame.K_w] and self.rect.top < screen_height/2:
             self.rect.y += 4
+            if col:
+                self.rect.y -= 4
+                return
         if keys[pygame.K_d] and self.rect.right > screen_width - screen_width/2:
             self.rect.x -= 4
+            if col:
+                self.rect.x += 4
+                return
         if keys[pygame.K_s] and self.rect.bottom > screen_height - screen_height/2:
             self.rect.y -= 4
+            if col:
+                self.rect.y += 4
+                return
             
     def update(self):
         self.movement()
-        
         
 class Object(pygame.sprite.Sprite):
     def __init__(self, design, x, y, height, width): 
@@ -98,20 +114,40 @@ class Object(pygame.sprite.Sprite):
         self.height = height
         self.width = width
         self.image = pygame.image.load(design).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (self.width*scale, self.height*scale))
+        self.image = pygame.transform.scale(self.image, (self.width*object_scale, self.height*object_scale))
         self.rect = self.image.get_rect(center = (self.x, self.y))
        
-        
+    def check_col(self):
+        global col
+        col = pygame.sprite.collide_rect(self, player.sprite)
+       
     def movement(self):
+        global col
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a] and floor.sprite.rect.left < screen_width/2:
             self.rect.x += 4
+            self.check_col()
+            if col:
+                self.rect.x -= 4
+                return
         if keys[pygame.K_w] and floor.sprite.rect.top < screen_height/2:
             self.rect.y += 4
+            self.check_col()
+            if col:
+                self.rect.y -= 4
+                return
         if keys[pygame.K_d] and floor.sprite.rect.right > screen_width - screen_width/2:
             self.rect.x -= 4
+            self.check_col()
+            if col:
+                self.rect.x += 4
+                return
         if keys[pygame.K_s] and floor.sprite.rect.bottom > screen_height - screen_height/2:
             self.rect.y -= 4
+            self.check_col()
+            if col:
+                self.rect.y += 4
+                return
         
     def update(self):
         self.movement()
@@ -144,8 +180,6 @@ def main():
                 print(pygame.mouse.get_pos())
         draw()
         pygame.display.update()
-        
-        print("x na stol", chair.sprite.rect.x)
 
     pygame.quit()
 
@@ -154,16 +188,16 @@ def draw():
     screen.fill((0, 0, 0))
     
     floor.draw(screen)
-    floor.update()
-
     player.draw(screen)
-    player.update()
-    
     desk.draw(screen)
-    desk.update()
+    chair.draw(screen)
     
+    player.update()
+    desk.update()
     chair.draw(screen)
     chair.update()
+    
+    floor.update()
 
 #call main function
 if __name__ == "__main__":
