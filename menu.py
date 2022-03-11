@@ -5,7 +5,7 @@ pygame.init()
 
 screen_width, screen_height = 1280, 720
 screen = pygame.display.set_mode((screen_width, screen_height))
-screen.blit(pygame.transform.scale(pygame.image.load("assets/images/menu_background.png"), (screen_width, screen_height)), (0, 0))
+screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/menu_background.png"), (screen_width, screen_height)), (0, 0))
 
 class Button(pygame.sprite.Sprite):
     def __init__(self, x, y, image_name):
@@ -29,13 +29,13 @@ class Button(pygame.sprite.Sprite):
         if self.x <= mouse[0] <= self.x + self.image.get_width() and self.y <= mouse[1] <= self.y  + self.image.get_height():
             return True
 
-play_button = Button(screen_width/2 - 50, screen_height/2, "assets/images/play_button")
-quit_button = Button(screen_width/2 - 50, screen_height/2+100, "assets/images/quit_button")
+play_button = Button(screen_width/2 - 50, screen_height/2, "assets/images/buttons/play_button")
+quit_button = Button(screen_width/2 - 50, screen_height/2+100, "assets/images/buttons/quit_button")
 
 def menu():
     mouse = pygame.mouse.get_pos()
     
-    screen.blit(pygame.transform.scale(pygame.image.load("assets/images/menu_background.png"), (screen_width, screen_height)), (0, 0))
+    screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/menu_background.png"), (screen_width, screen_height)), (0, 0))
     screen.blit(pygame.transform.scale(pygame.image.load("assets/images/game_name.png"), (screen_width/2 - 180, screen_height/2 - 180)), (420, 180))
     play_button.change_button()
     quit_button.change_button()

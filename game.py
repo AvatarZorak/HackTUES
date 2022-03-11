@@ -103,7 +103,7 @@ class Object(pygame.sprite.Sprite):
         
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
-pygame.display.set_caption('test')
+pygame.display.set_caption('Mission: Develop')
 clock = pygame.time.Clock()
 
 player = pygame.sprite.GroupSingle()
