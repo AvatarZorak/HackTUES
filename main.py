@@ -1,9 +1,23 @@
+#libraries
 import pygame
-from sys import exit
 
+#
+pygame.init()
 
+#constants
+screen_width, screen_height = 1000, 600
+
+FPS = 60
+clock = pygame.time.Clock()
+
+#screen_properties
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption('test')
+
+#global variables
 allowmove = 0
 
+#classes
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -62,14 +76,14 @@ class Background(pygame.sprite.Sprite):
             self.rect.x += 4
         if keys[pygame.K_w] and self.rect.top < 0:
             self.rect.y += 4
-        if keys[pygame.K_d] and self.rect.right > 1000:
+        if keys[pygame.K_d] and self.rect.right > screen_width:
             self.rect.x -= 4
-        if keys[pygame.K_s] and self.rect.bottom > 600:
+        if keys[pygame.K_s] and self.rect.bottom > screen_height:
             self.rect.y -= 4
 
     def can_move(self):
         global allowmove
-        if self.rect.left < 0 and self.rect.top < 0 and self.rect.right > 1000 and self.rect.bottom > 600:
+        if self.rect.left < 0 and self.rect.top < 0 and self.rect.right > screen_width and self.rect.bottom > screen_height:
             allowmove = 1
         else:
             allowmove = 0
@@ -99,12 +113,7 @@ class Object(pygame.sprite.Sprite):
     def update(self):
         self.movement()
         
-        
-pygame.init()
-screen = pygame.display.set_mode((1000,600))
-pygame.display.set_caption('test')
-clock = pygame.time.Clock()
-
+#definition of objects
 player = pygame.sprite.GroupSingle()
 player.add(Player())
 
@@ -112,13 +121,31 @@ floor = pygame.sprite.GroupSingle()
 floor.add(Background())
 
 chair = pygame.sprite.GroupSingle()
-chair.add(Object("object.png"))
+chair.add(Object("object.png"))        
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
+
+#functions
+def main():
+
+    run = True
+
+    while run:
+
+        clock.tick(FPS)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
+
+        draw()
+
+        pygame.display.update()
+        
+
+    pygame.quit()
+
+def draw():
 
     floor.draw(screen)
     floor.update()
@@ -129,5 +156,6 @@ while True:
     chair.draw(screen)
     chair.update()
 
-    pygame.display.update()
-    clock.tick(60)
+#
+if __name__ == "__main__":
+    main()
