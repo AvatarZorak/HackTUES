@@ -1,22 +1,20 @@
 #libraries
 import pygame
 
-#
+#init pygame
 pygame.init()
 
 #constants
 screen_width, screen_height = 1280, 720
 scale = 2 
 
+#ticks
 FPS = 60
 clock = pygame.time.Clock()
 
 #screen_properties
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('test')
-
-#global variables
-allowmove = 0
 
 #classes
 class Player(pygame.sprite.Sprite):
@@ -25,7 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = 'L'
         self.image = pygame.image.load('assets\images\player_standing.png').convert_alpha()
         self.image = pygame.transform.scale(self.image,(self.image.get_width()*scale, self.image.get_height()*scale))
-        self.player_index = 0
+        self.player_index = 0.0
         self.rect = self.image.get_rect(center = (screen_width/2, screen_height/2))
         self.width = self.image.get_width()*0.4
         self.height = self.image.get_height()*0.4
@@ -46,6 +44,7 @@ class Player(pygame.sprite.Sprite):
             player_walk2 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('assets\images\player_walk_2.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
             player_walk = [player_walk1, player_walk2]
             self.image = player_stand
+            
         else:
             player_stand = pygame.transform.scale(pygame.image.load('assets\images\player_standing.png').convert_alpha(), (self.width * scale, self.height * scale))
             player_walk1 = pygame.transform.scale(pygame.image.load('assets\images\player_walk_1.png').convert_alpha(), (self.width * scale, self.height * scale))
@@ -64,9 +63,9 @@ class Player(pygame.sprite.Sprite):
         
         if dowalk: self.walk(player_walk)
         
-        
     def update(self):
         self.animation()
+        
         
 class Background(pygame.sprite.Sprite):
     def __init__(self):
@@ -77,26 +76,18 @@ class Background(pygame.sprite.Sprite):
         
     def movement(self):
         keys = pygame.key.get_pressed()
-        if allowmove == 0:
-            if keys[pygame.K_a] and self.rect.left < screen_width/2:
-                self.rect.x += 4
-            if keys[pygame.K_w] and self.rect.top < screen_height/2:
-                self.rect.y += 4
-            if keys[pygame.K_d] and self.rect.right > screen_width - screen_width/2:
-                self.rect.x -= 4
-            if keys[pygame.K_s] and self.rect.bottom > screen_height - screen_height/2:
-                self.rect.y -= 4
-
-    def can_move(self):
-        global allowmove
-        if (self.rect.left < 0 and self.rect.top < 0 and self.rect.right > screen_width and self.rect.bottom > screen_height):
-            allowmove = 1
-        else:
-            allowmove = 0
+        if keys[pygame.K_a] and self.rect.left < screen_width/2:
+            self.rect.x += 4
+        if keys[pygame.K_w] and self.rect.top < screen_height/2:
+            self.rect.y += 4
+        if keys[pygame.K_d] and self.rect.right > screen_width - screen_width/2:
+            self.rect.x -= 4
+        if keys[pygame.K_s] and self.rect.bottom > screen_height - screen_height/2:
+            self.rect.y -= 4
             
     def update(self):
         self.movement()
-        self.can_move()
+        
         
 class Object(pygame.sprite.Sprite):
     def __init__(self, design):
@@ -114,9 +105,7 @@ class Object(pygame.sprite.Sprite):
         if keys[pygame.K_d] and floor.sprite.rect.x > -screen_width/2 + 0.1:
             self.rect.x -= 4 
         if keys[pygame.K_s] and floor.sprite.rect.y > -screen_height/2 + 0.1:
-            self.rect.y -= 4
-        
-                
+            self.rect.y -= 4     
             
     def update(self):
         self.movement()
@@ -134,34 +123,25 @@ chair.add(Object("assets\images\object.png"))
 
 #functions
 def main():
-
     run = True
 
     while run:
-
         clock.tick(FPS)
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(pygame.mouse.get_pos())
-                
-        #print(floor.sprite.rect.x)
-        print(floor.sprite.rect.y)
-        #print("wdwd", chair.sprite.rect.x)
-
         draw()
-
         pygame.display.update()
-        
 
     pygame.quit()
 
+#display
 def draw():
 
     
-    screen.fill((0,0,0))
+    screen.fill((0, 0, 0))
     
     floor.draw(screen)
     floor.update()
@@ -172,6 +152,6 @@ def draw():
     chair.draw(screen)
     chair.update()
 
-#
+#call main function
 if __name__ == "__main__":
     main()
