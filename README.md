@@ -1,2 +1,3 @@
 # HackTUES
-space game
+space game from us
+
