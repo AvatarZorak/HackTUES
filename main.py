@@ -71,7 +71,7 @@ class Background(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load('Assets/Images/Floor.png').convert_alpha()
-        self.image = pygame.transform.scale(self.image, (screen_width,screen_height))
+        self.image = pygame.transform.scale(self.image, (screen_width*3,screen_height*3))
         self.rect = self.image.get_rect(center = (screen_width/2, screen_height/2))
         
     def movement(self):
@@ -98,14 +98,14 @@ class Object(pygame.sprite.Sprite):
         
     def movement(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_a] and floor.sprite.rect.x < screen_width/2 - 0.1:
+        if keys[pygame.K_a] and floor.sprite.rect.left < screen_width/2:
             self.rect.x += 4
-        if keys[pygame.K_w] and floor.sprite.rect.y < screen_height/2 -0.1:
+        if keys[pygame.K_w] and floor.sprite.rect.top < screen_height/2:
             self.rect.y += 4
-        if keys[pygame.K_d] and floor.sprite.rect.x > -screen_width/2 + 0.1:
-            self.rect.x -= 4 
-        if keys[pygame.K_s] and floor.sprite.rect.y > -screen_height/2 + 0.1:
-            self.rect.y -= 4     
+        if keys[pygame.K_d] and floor.sprite.rect.right > screen_width - screen_width/2:
+            self.rect.x -= 4
+        if keys[pygame.K_s] and floor.sprite.rect.bottom > screen_height - screen_height/2:
+            self.rect.y -= 4
             
     def update(self):
         self.movement()
@@ -139,8 +139,6 @@ def main():
 
 #display
 def draw():
-
-    
     screen.fill((0, 0, 0))
     
     floor.draw(screen)
