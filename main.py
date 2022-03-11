@@ -152,7 +152,18 @@ desk = pygame.sprite.GroupSingle()
 desk.add(Object("Assets/Images/desk.png", 490, -50, 80, 110)) 
 
 chair = pygame.sprite.GroupSingle()
-chair.add(Object("Assets/Images/Object.png", 840 ,-55, 60, 40))           
+chair.add(Object("Assets/Images/Object.png", 840 ,-55, 60, 40))   
+
+wall_up = pygame.sprite.GroupSingle()
+wall_up.add(Object("Assets/Images/wall_up.png", 500 ,-300, 60, 1000))
+
+wall_down = pygame.sprite.GroupSingle()
+wall_down.add(Object("Assets/Images/wall_down.png", 600 ,600, 60, 1000))
+
+shkaf = pygame.sprite.GroupSingle()
+shkaf.add(Object("Assets/Images/shkaf.png", 340 ,-245, 90, 300))   
+
+             
 
 
 #functions
@@ -181,7 +192,10 @@ def reversemove(sprite):
 def dontmove(self):
     reversemove(desk.sprite)
     reversemove(chair.sprite)
+    reversemove(shkaf.sprite)
     reversemove(floor.sprite)
+    reversemove(wall_up.sprite)
+    reversemove(wall_down.sprite)
 
 #display
 def draw():
@@ -189,12 +203,21 @@ def draw():
     
     floor.draw(screen)
     player.draw(screen)
+    wall_up.draw(screen)
+    wall_down.draw(screen)
     desk.draw(screen)
     chair.draw(screen)
+    shkaf.draw(screen)
+    
     
     player.update()
+    wall_up.update()
+    wall_down.update()
     desk.update()
     chair.update()
+    shkaf.update()
+    
+    
     
     floor.update()
 
