@@ -6,8 +6,13 @@ pygame.init()
 
 #constants
 screen_width, screen_height = 1280, 720
-scale = 2 
-background_scale = 1.5
+scale = 2
+background_scale = 3.5
+object_scale = 1.5
+
+#global variables
+col = False
+try_move = []
 
 #ticks
 FPS = 60
@@ -75,20 +80,24 @@ class Background(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (screen_width*background_scale, screen_height*background_scale))
         self.rect = self.image.get_rect(center = (screen_width/2, screen_height/2))
         
-    def movement(self):
+    def trymovement(self):
+        global try_move
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a] and self.rect.left < screen_width/2:
             self.rect.x += 4
+            try_move.append("+x")
         if keys[pygame.K_w] and self.rect.top < screen_height/2:
             self.rect.y += 4
+            try_move.append("+y")
         if keys[pygame.K_d] and self.rect.right > screen_width - screen_width/2:
             self.rect.x -= 4
+            try_move.append("-x")
         if keys[pygame.K_s] and self.rect.bottom > screen_height - screen_height/2:
             self.rect.y -= 4
+            try_move.append("-y")
             
     def update(self):
-        self.movement()
-        
+        self.trymovement()
         
 class Object(pygame.sprite.Sprite):
     def __init__(self, design, x, y, height, width): 
@@ -98,24 +107,39 @@ class Object(pygame.sprite.Sprite):
         self.height = height
         self.width = width
         self.image = pygame.image.load(design).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (self.width*scale, self.height*scale))
+        self.image = pygame.transform.scale(self.image, (self.width*object_scale, self.height*object_scale))
         self.rect = self.image.get_rect(center = (self.x, self.y))
        
-        
-    def movement(self):
+    def check_col(self):
+        global col
+        col = pygame.sprite.collide_rect(self, player.sprite)
+       
+    def trymovement(self):
+        global try_move
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a] and floor.sprite.rect.left < screen_width/2:
             self.rect.x += 4
+            try_move.append("+x")
         if keys[pygame.K_w] and floor.sprite.rect.top < screen_height/2:
             self.rect.y += 4
+            try_move.append("+y")
         if keys[pygame.K_d] and floor.sprite.rect.right > screen_width - screen_width/2:
             self.rect.x -= 4
+            try_move.append("-x")
         if keys[pygame.K_s] and floor.sprite.rect.bottom > screen_height - screen_height/2:
             self.rect.y -= 4
+            try_move.append("-y")
         
     def update(self):
-        self.movement()
-    
+        global col
+        global try_move
+        try_move = []
+        self.trymovement()
+        self.check_col()
+        if col:
+            dontmove(self)
+        col = False
+        try_move = []
 
 #definition of objects
 player = pygame.sprite.GroupSingle()
@@ -125,10 +149,21 @@ floor = pygame.sprite.GroupSingle()
 floor.add(Background())
 
 desk = pygame.sprite.GroupSingle()
-desk.add(Object("Assets/Images/desk.png", 990, -100, 80, 110)) 
+desk.add(Object("Assets/Images/desk.png", 490, -50, 80, 110)) 
 
 chair = pygame.sprite.GroupSingle()
-chair.add(Object("Assets/Images/Object.png", 940 ,-75, 60, 40))           
+chair.add(Object("Assets/Images/Object.png", 840 ,-55, 60, 40))   
+
+wall_up = pygame.sprite.GroupSingle()
+wall_up.add(Object("Assets/Images/wall_up.png", 500 ,-300, 60, 1000))
+
+wall_down = pygame.sprite.GroupSingle()
+wall_down.add(Object("Assets/Images/wall_down.png", 600 ,600, 60, 1000))
+
+shkaf = pygame.sprite.GroupSingle()
+shkaf.add(Object("Assets/Images/shkaf.png", 340 ,-245, 90, 300))   
+
+             
 
 
 #functions
@@ -144,26 +179,47 @@ def main():
                 print(pygame.mouse.get_pos())
         draw()
         pygame.display.update()
-        
-        print("x na stol", chair.sprite.rect.x)
 
     pygame.quit()
+
+def reversemove(sprite):
+    for i in try_move:
+            if i == "+x": sprite.rect.x -= 4
+            elif i == "+y": sprite.rect.y -= 4
+            elif i == "-x": sprite.rect.x += 4
+            elif i == "-y": sprite.rect.y += 4
+
+def dontmove(self):
+    reversemove(desk.sprite)
+    reversemove(chair.sprite)
+    reversemove(shkaf.sprite)
+    reversemove(floor.sprite)
+    reversemove(wall_up.sprite)
+    reversemove(wall_down.sprite)
 
 #display
 def draw():
     screen.fill((0, 0, 0))
     
     floor.draw(screen)
-    floor.update()
-
     player.draw(screen)
-    player.update()
-    
+    wall_up.draw(screen)
+    wall_down.draw(screen)
     desk.draw(screen)
-    desk.update()
-    
     chair.draw(screen)
+    shkaf.draw(screen)
+    
+    
+    player.update()
+    wall_up.update()
+    wall_down.update()
+    desk.update()
     chair.update()
+    shkaf.update()
+    
+    
+    
+    floor.update()
 
 #call main function
 if __name__ == "__main__":
