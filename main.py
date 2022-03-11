@@ -147,12 +147,26 @@ class Object(pygame.sprite.Sprite):
         col = False
         try_move = []
 
+class Paper(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.x = x
+        self.y = y
+        self.image = pygame.transform.scale(pygame.image.load("assets/images/sprite_0.png"), (40, 40))
+        self.rect = self.image.get_rect(center = (screen_width/2 + 150, screen_height/2 - 200))
+        
+
+
 #definition of objects
 player = pygame.sprite.GroupSingle()
 player.add(Player())
 
 floor = pygame.sprite.GroupSingle()
 floor.add(Background())
+
+paper = pygame.sprite.GroupSingle()
+paper.add(Paper(450, -50))
+
 
 desk = pygame.sprite.GroupSingle()
 desk.add(Object("Assets/Images/desk.png", 490, -50, 80, 110)) 
@@ -216,8 +230,9 @@ def draw_game():
     desk.draw(screen)
     chair.draw(screen)
     shelf.draw(screen)
-    
-    
+    paper.draw(screen)
+
+    paper.update()
     player.update()
     wall_up.update()
     wall_down.update()

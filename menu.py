@@ -36,6 +36,7 @@ def menu():
     mouse = pygame.mouse.get_pos()
     
     screen.blit(pygame.transform.scale(pygame.image.load("assets/images/menu_background.png"), (screen_width, screen_height)), (0, 0))
+    screen.blit(pygame.transform.scale(pygame.image.load("assets/images/game_name.png"), (screen_width/2 - 180, screen_height/2 - 180)), (420, 180))
     play_button.change_button()
     quit_button.change_button()
 
