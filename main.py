@@ -5,7 +5,8 @@ import pygame
 pygame.init()
 
 #constants
-screen_width, screen_height = 1000, 600
+screen_width, screen_height = 1280, 720
+scale = 2 
 
 FPS = 60
 clock = pygame.time.Clock()
@@ -23,8 +24,11 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.direction = 'L'
         self.image = pygame.image.load('assets\images\player_standing.png').convert_alpha()
+        self.image = pygame.transform.scale(self.image,(self.image.get_width()*scale, self.image.get_height()*scale))
         self.player_index = 0
-        self.rect = self.image.get_rect(center = (500, 300))
+        self.rect = self.image.get_rect(center = (screen_width/2, screen_height/2))
+        self.width = self.image.get_width()*0.4
+        self.height = self.image.get_height()*0.4
 
     def walk(self, player_walk):
         self.player_index += 0.15
@@ -37,15 +41,15 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         
         if self.direction == 'L':
-            player_stand = pygame.transform.flip(pygame.image.load('assets\images\player_standing.png').convert_alpha(), True, False)
-            player_walk1 = pygame.transform.flip(pygame.image.load('assets\images\player_walk_1.png').convert_alpha(), True, False)
-            player_walk2 = pygame.transform.flip(pygame.image.load('assets\images\player_walk_2.png').convert_alpha(), True, False)
+            player_stand = pygame.transform.flip(pygame.transform.scale(pygame.image.load('assets\images\player_standing.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
+            player_walk1 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('assets\images\player_walk_1.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
+            player_walk2 = pygame.transform.flip(pygame.transform.scale(pygame.image.load('assets\images\player_walk_2.png').convert_alpha(), (self.width * scale, self.height * scale)), True, False)
             player_walk = [player_walk1, player_walk2]
             self.image = player_stand
         else:
-            player_stand = pygame.image.load('assets\images\player_standing.png').convert_alpha()
-            player_walk1 = pygame.image.load('assets\images\player_walk_1.png').convert_alpha()
-            player_walk2 = pygame.image.load('assets\images\player_walk_2.png').convert_alpha()
+            player_stand = pygame.transform.scale(pygame.image.load('assets\images\player_standing.png').convert_alpha(), (self.width * scale, self.height * scale))
+            player_walk1 = pygame.transform.scale(pygame.image.load('assets\images\player_walk_1.png').convert_alpha(), (self.width * scale, self.height * scale))
+            player_walk2 = pygame.transform.scale(pygame.image.load('assets\images\player_walk_2.png').convert_alpha(), (self.width * scale, self.height * scale))
             player_walk = [player_walk1, player_walk2]
             self.image = player_stand
             
@@ -68,22 +72,24 @@ class Background(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load('assets/images/floor.png').convert_alpha()
-        self.rect = self.image.get_rect(center = (500, 300))
+        self.image = pygame.transform.scale(self.image, (screen_width,screen_height))
+        self.rect = self.image.get_rect(center = (screen_width/2, screen_height/2))
         
     def movement(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_a] and self.rect.left < 0:
-            self.rect.x += 4
-        if keys[pygame.K_w] and self.rect.top < 0:
-            self.rect.y += 4
-        if keys[pygame.K_d] and self.rect.right > screen_width:
-            self.rect.x -= 4
-        if keys[pygame.K_s] and self.rect.bottom > screen_height:
-            self.rect.y -= 4
+        if allowmove == 0:
+            if keys[pygame.K_a] and self.rect.left < screen_width/2:
+                self.rect.x += 4
+            if keys[pygame.K_w] and self.rect.top < screen_height/2:
+                self.rect.y += 4
+            if keys[pygame.K_d] and self.rect.right > screen_width - screen_width/2:
+                self.rect.x -= 4
+            if keys[pygame.K_s] and self.rect.bottom > screen_height - screen_height/2:
+                self.rect.y -= 4
 
     def can_move(self):
         global allowmove
-        if self.rect.left < 0 and self.rect.top < 0 and self.rect.right > screen_width and self.rect.bottom > screen_height:
+        if (self.rect.left < 0 and self.rect.top < 0 and self.rect.right > screen_width and self.rect.bottom > screen_height):
             allowmove = 1
         else:
             allowmove = 0
@@ -96,19 +102,21 @@ class Object(pygame.sprite.Sprite):
     def __init__(self, design):
         super().__init__()
         self.image = pygame.image.load(design).convert_alpha()
-        self.rect = self.image.get_rect(center = (600, 300))
+        self.image = pygame.transform.scale(self.image, (self.image.get_width()*scale, self.image.get_height()*scale))
+        self.rect = self.image.get_rect(center = (800, 100))
         
     def movement(self):
         keys = pygame.key.get_pressed()
-        if allowmove:
-            if keys[pygame.K_a]:
-                self.rect.x += 4
-            if keys[pygame.K_w]:
-                self.rect.y += 4
-            if keys[pygame.K_d]:
-                self.rect.x -= 4
-            if keys[pygame.K_s]:
-                self.rect.y -= 4
+        if keys[pygame.K_a] and floor.sprite.rect.x < screen_width/2 - 0.1:
+            self.rect.x += 4
+        if keys[pygame.K_w] and floor.sprite.rect.y < screen_height/2 -0.1:
+            self.rect.y += 4
+        if keys[pygame.K_d] and floor.sprite.rect.x > -screen_width/2 + 0.1:
+            self.rect.x -= 4 
+        if keys[pygame.K_s] and floor.sprite.rect.y > -screen_height/2 + 0.1:
+            self.rect.y -= 4
+        
+                
             
     def update(self):
         self.movement()
@@ -136,7 +144,12 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(pygame.mouse.get_pos())
+                
+        #print(floor.sprite.rect.x)
+        print(floor.sprite.rect.y)
+        #print("wdwd", chair.sprite.rect.x)
 
         draw()
 
@@ -147,6 +160,9 @@ def main():
 
 def draw():
 
+    
+    screen.fill((0,0,0))
+    
     floor.draw(screen)
     floor.update()
 
