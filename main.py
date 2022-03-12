@@ -13,6 +13,7 @@ scale = 0.3
 background_scale = 3.5
 object_scale = 1.5
 
+
 #global variables
 col = False
 try_move = []
@@ -24,10 +25,6 @@ clock = pygame.time.Clock()
 #screen_properties
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Learn To Space')
-
-#pygame icon
-icon = pygame.image.load('Assets\Images\icon.png')
-pygame.display.set_icon(icon)
 
 #classes
 class Player(pygame.sprite.Sprite):
@@ -258,6 +255,9 @@ shelf.add(Object("Assets/Images/objects/shelf.png", 300 ,-300, 90, 300))
 list = [paper1, paper2, paper3]
 counter = 0
 is_quest_1_screen = False
+is_quest_2_screen = False
+
+sentence = []
 
 #functions ###################################################################
 def main():
@@ -366,6 +366,7 @@ def draw_game():
         screen.blit(pygame.transform.scale(image, (50, 50)), (i * 50, 0))
 
     global is_quest_1_screen
+    global is_quest_2_screen
 
     key_pressed = pygame.key.get_pressed()
     if len(list) == 0 and key_pressed[pygame.K_q]:
@@ -374,7 +375,34 @@ def draw_game():
     if is_quest_1_screen:
         is_quest_1_screen = is_open()
         screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text.png"), (screen_width, screen_height)), (0, 0))
+        
+    if desk_col() == True:
+        is_quest_2_screen = True
+        
+    if is_quest_2_screen == True:
+        is_quest_2_screen = is_open()
+        screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/quest_2.png"), (screen_width, screen_height)), (0, 0))
 
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                sentence.append(event.unicode)
+
+        for i in range(37):
+            image = pygame.image.load("assets/images/point.png")
+
+            if i < len(sentence):
+                image = pygame.image.load("assets/images/point_typed.png")
+                screen.blit(pygame.transform.scale(image, (35, 35)), ((i * 30) + 100, 550)) 
+            else:    
+                image = pygame.image.load("assets/images/point.png")
+                screen.blit(pygame.transform.scale(image, (35, 35)), ((i * 30) + 100, 550))
+
+        if len(sentence) == 36:
+            sentence_string = ''.join(sentence)
+            if sentence_string == "learn to space... explore the cosmos":
+                pass
+            else:
+                pass#creen.blit       
     ########################################################################
     paper1.update()
     paper2.update()
@@ -399,6 +427,15 @@ def draw_game():
     wall_right3.update()
     
     floor.update()
+    
+    
+def desk_col():
+    global deskcol
+    global is_quest_2_screen
+    key_pressed = pygame.key.get_pressed()
+    deskcol = floor.sprite.rect.x < - 2150 and floor.sprite.rect.x > -2350 and floor.sprite.rect.y == -408 and key_pressed[pygame.K_p]
+    return deskcol
+
 
 #call main function
 if __name__ == "__main__":
