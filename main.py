@@ -13,7 +13,6 @@ scale = 0.3
 background_scale = 3.5
 object_scale = 1.5
 
-
 #global variables
 col = False
 try_move = []
@@ -25,6 +24,10 @@ clock = pygame.time.Clock()
 #screen_properties
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Learn To Space')
+
+#display icon
+icon = pygame.image.load("assets/images/icon.png")
+pygame.display.set_icon(icon)
 
 #classes
 class Player(pygame.sprite.Sprite):
@@ -256,11 +259,8 @@ list = [paper1, paper2, paper3]
 counter = 0
 is_quest_1_screen = False
 is_quest_2_screen = False
-<<<<<<< HEAD
 
 sentence = []
-=======
->>>>>>> a63c5c241a1df392d8c237612e4e72a9ebb9ac88
 
 #functions ###################################################################
 def main():
@@ -370,10 +370,6 @@ def draw_game():
 
     global is_quest_1_screen
     global is_quest_2_screen
-<<<<<<< HEAD
-=======
-
->>>>>>> a63c5c241a1df392d8c237612e4e72a9ebb9ac88
 
     key_pressed = pygame.key.get_pressed()
     if len(list) == 0 and key_pressed[pygame.K_q]:
@@ -382,11 +378,7 @@ def draw_game():
     if is_quest_1_screen:
         is_quest_1_screen = is_open()
         screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text.png"), (screen_width, screen_height)), (0, 0))
-<<<<<<< HEAD
-        
-=======
-   
->>>>>>> a63c5c241a1df392d8c237612e4e72a9ebb9ac88
+
     if desk_col() == True:
         is_quest_2_screen = True
         
@@ -394,7 +386,7 @@ def draw_game():
         is_quest_2_screen = is_open()
         screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/quest_2.png"), (screen_width, screen_height)), (0, 0))
 
-<<<<<<< HEAD
+
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 sentence.append(event.unicode)
@@ -414,9 +406,8 @@ def draw_game():
             if sentence_string == "learn to space... explore the cosmos":
                 pass
             else:
-                pass#creen.blit       
-=======
->>>>>>> a63c5c241a1df392d8c237612e4e72a9ebb9ac88
+                pass     
+
     ########################################################################
     paper1.update()
     paper2.update()
@@ -449,16 +440,6 @@ def desk_col():
     key_pressed = pygame.key.get_pressed()
     deskcol = floor.sprite.rect.x < - 2150 and floor.sprite.rect.x > -2350 and floor.sprite.rect.y == -408 and key_pressed[pygame.K_p]
     return deskcol
-
-
-def desk_col():
-    global deskcol
-    global is_quest_2_screen
-    key_pressed = pygame.key.get_pressed()
-    deskcol = floor.sprite.rect.x < - 2150 and floor.sprite.rect.x > -2350 and floor.sprite.rect.y == -408 and key_pressed[pygame.K_p]
-    return deskcol
-
-
 
 #call main function
 if __name__ == "__main__":
