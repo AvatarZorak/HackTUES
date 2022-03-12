@@ -319,17 +319,7 @@ is_quest_2_screen_completed = False
 starting_point = None
 
 sentence = []
-
 books = []
-
-facts = ["Учените смятат, че в центъра на почти всяка галактика има супермасивна черна дупка.\n Тези черни дупки всъщност закрепват галактиките, като ги държат заедно в пространството.\n Черната дупка в центъра на Млечния път, Стрелец А, е повече от четири милиона пъти по-масивна от нашето Слънце.",
-         "",
-         "",
-         "",
-         "",
-         "",
-         ""
-        ]
 
 #functions ###################################################################
 def main():
@@ -478,10 +468,6 @@ def draw_game():
     if is_quest_1_screen:
         is_quest_1_screen = is_open()
         screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text.png"), (screen_width, screen_height)), (0, 0))
-        font = pygame.font.SysFont('Calibri', 30)
-        text = font.render(facts[0], True, (0, 0, 0))
-        screen.blit(pygame.transform.scale(text, (screen_width, 100)), (100, 100))
-
 
     if desk_col() == True:
         is_quest_2_screen = True
@@ -523,7 +509,7 @@ def draw_game():
 
     if shelf_col():
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN and len(books) <= 9:
                 books.append(event.unicode)
 
         for i in range(9):
@@ -537,7 +523,8 @@ def draw_game():
         if len(books) >= 9:
             books_string = ''.join(books)
             if books_string == "123412458":
-                print("maiakti smurdi")
+                if is_open():
+                    screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text2.png"), (screen_width-200, screen_height-200)), (100, 100))
             else:
 
                 if starting_point == None:
