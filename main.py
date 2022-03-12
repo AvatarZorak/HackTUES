@@ -181,52 +181,52 @@ paper.add(Paper(450, -50))
 
 
 desk = pygame.sprite.GroupSingle()
-desk.add(Object("Assets/Images/desk.png", 700, -240, 80, 110)) 
+desk.add(Object("Assets/Images/objects/desk.png", 700, -240, 80, 110)) 
 
 desk2 = pygame.sprite.GroupSingle()
-desk2.add(Object("Assets/Images/desk_variant2.png", 1000, -240, 80, 110))
+desk2.add(Object("Assets/Images/objects/desk_variant2.png", 1000, -240, 80, 110))
 
 desk3 = pygame.sprite.GroupSingle()
-desk3.add(Object("Assets/Images/desk.png", 1300, -240, 80, 110)) 
+desk3.add(Object("Assets/Images/objects/desk.png", 1300, -240, 80, 110)) 
 
 chair = pygame.sprite.GroupSingle()
-chair.add(Object("Assets/Images/Object.png", 690 ,-225, 60, 40))
+chair.add(Object("Assets/Images/objects/Object.png", 690 ,-225, 60, 40))
 
 chair2 = pygame.sprite.GroupSingle()
-chair2.add(Object("Assets/Images/Object.png", 990 ,-225, 60, 40))
+chair2.add(Object("Assets/Images/objects/Object.png", 990 ,-225, 60, 40))
 
 chair3 = pygame.sprite.GroupSingle()
-chair3.add(Object("Assets/Images/Object.png", 1290 ,-225, 60, 40))
+chair3.add(Object("Assets/Images/objects/Object.png", 1290 ,-225, 60, 40))
 
 wall_down = pygame.sprite.GroupSingle()
-wall_down.add(Object("Assets/Images/wall_ud.png", 605, 1110, 60, 2100))
+wall_down.add(Object("Assets/Images/objects/wall_ud.png", 605, 1110, 60, 2100))
 
 wall_down2 = pygame.sprite.GroupSingle()
-wall_down2.add(Object("Assets/Images/wall_ud.png", 880, 150, 60, 800))
+wall_down2.add(Object("Assets/Images/objects/wall_ud.png", 880, 150, 60, 800))
 
 wall_up = pygame.sprite.GroupSingle() 
-wall_up.add(Object("Assets/Images/wall_ud.png", 1350 ,-300, 60, 1150))
+wall_up.add(Object("Assets/Images/objects/wall_ud.png", 1350 ,-300, 60, 1150))
 
 wall_up2 = pygame.sprite.GroupSingle()
-wall_up2.add(Object("Assets/Images/wall_ud.png", 650 , -610, 60, 2510))
+wall_up2.add(Object("Assets/Images/objects/wall_ud.png", 650 , -610, 60, 2510))
 
 wall_left = pygame.sprite.GroupSingle()
-wall_left.add(Object("Assets/Images/wall_lr.png", -205, 450, 1410, 60))
+wall_left.add(Object("Assets/Images/objects/wall_lr.png", -205, 450, 1410, 60))
 
 wall_left2 = pygame.sprite.GroupSingle()
-wall_left2.add(Object("Assets/Images/wall_lr.png", 305, 900, 310, 60))
+wall_left2.add(Object("Assets/Images/objects/wall_lr.png", 305, 900, 310, 60))
 
 wall_right = pygame.sprite.GroupSingle()
-wall_right.add(Object("Assets/Images/wall_lr.png", 1500, -500, 1200, 60))
+wall_right.add(Object("Assets/Images/objects/wall_lr.png", 1500, -500, 1200, 60))
 
 wall_right2 = pygame.sprite.GroupSingle()
-wall_right2.add(Object("Assets/Images/wall_lr.png", 1500, -700, 600, 60))
+wall_right2.add(Object("Assets/Images/objects/wall_lr.png", 1500, -700, 600, 60))
 
 wall_right3 = pygame.sprite.GroupSingle()
-wall_right3.add(Object("Assets/Images/wall_lr.png", 2200, 400, 1600, 60))
+wall_right3.add(Object("Assets/Images/objects/wall_lr.png", 2200, 400, 1600, 60))
 
 shelf = pygame.sprite.GroupSingle()
-shelf.add(Object("Assets/Images/shelf.png", 300 ,-300, 90, 300))   
+shelf.add(Object("Assets/Images/objects/shelf.png", 300 ,-300, 90, 300))   
 
 #functions ###################################################################
 def main():
