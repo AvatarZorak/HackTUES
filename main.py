@@ -3,6 +3,8 @@ from turtle import width
 import pygame
 from menu import Button, menu
 from sys import exit
+import datetime
+import random
 
 #init pygame
 pygame.init()
@@ -28,6 +30,12 @@ pygame.display.set_caption('Learn To Space')
 #display icon
 icon = pygame.image.load("assets/images/icon.png")
 pygame.display.set_icon(icon)
+
+#audio
+pygame.mixer.music.load("assets/audio/soundtrack-v4.mp3")
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.2)
+
 
 #classes
 class Player(pygame.sprite.Sprite):
@@ -202,10 +210,10 @@ paper1 = pygame.sprite.GroupSingle()
 paper1.add(Paper(0,0))
 
 paper2 = pygame.sprite.GroupSingle()
-paper2.add(Paper(2100 ,-100))
+paper2.add(Paper(100 ,100))
 
 paper3 = pygame.sprite.GroupSingle()
-paper3.add(Paper(1000,300))
+paper3.add(Paper(200,200))
 
 desk = pygame.sprite.GroupSingle()
 desk.add(Object("Assets/Images/objects/desk.png", 700, -240, 80, 110)) 
@@ -259,8 +267,19 @@ list = [paper1, paper2, paper3]
 counter = 0
 is_quest_1_screen = False
 is_quest_2_screen = False
+is_quest_2_screen_completed = False
+starting_point = None
 
 sentence = []
+
+facts = ["Учените смятат, че в центъра на почти всяка галактика има супермасивна черна дупка.\n Тези черни дупки всъщност закрепват галактиките, като ги държат заедно в пространството.\n Черната дупка в центъра на Млечния път, Стрелец А, е повече от четири милиона пъти по-масивна от нашето Слънце.",
+         "",
+         "",
+         "",
+         "",
+         "",
+         ""
+        ]
 
 #functions ###################################################################
 def main():
@@ -378,6 +397,10 @@ def draw_game():
     if is_quest_1_screen:
         is_quest_1_screen = is_open()
         screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text.png"), (screen_width, screen_height)), (0, 0))
+        font = pygame.font.SysFont('Calibri', 30)
+        text = font.render(facts[0], True, (0, 0, 0))
+        screen.blit(pygame.transform.scale(text, (screen_width, 100)), (100, 100))
+
 
     if desk_col() == True:
         is_quest_2_screen = True
@@ -391,7 +414,7 @@ def draw_game():
             if event.type == pygame.KEYDOWN:
                 sentence.append(event.unicode)
 
-        for i in range(37):
+        for i in range(36):
             image = pygame.image.load("assets/images/point.png")
 
             if i < len(sentence):
@@ -401,12 +424,23 @@ def draw_game():
                 image = pygame.image.load("assets/images/point.png")
                 screen.blit(pygame.transform.scale(image, (35, 35)), ((i * 30) + 100, 550))
 
-        if len(sentence) == 36:
+        if len(sentence) == 3:
             sentence_string = ''.join(sentence)
-            if sentence_string == "learn to space... explore the cosmos":
-                pass
+            if sentence_string == "abc":#"learn to space... explore the cosmos":
+                if is_open():
+                    screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text2.png"), (screen_width-200, screen_height-200)), (100, 100))
             else:
-                pass     
+                global starting_point
+
+                if starting_point == None:
+                    starting_point = datetime.datetime.now()
+                
+                current_point = datetime.datetime.now()
+                if (current_point - starting_point).seconds < 5:
+                    screen.blit(pygame.image.load("assets/images/backgrounds/error.png"), (550, 350))
+                else:
+                    starting_point = None
+                    sentence.clear()     
 
     ########################################################################
     paper1.update()
