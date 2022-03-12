@@ -545,7 +545,6 @@ def draw_game():
                     starting_point = None
                     books.clear()
 
-
     ########################################################################
     paper1.update()
     paper2.update()
