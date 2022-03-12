@@ -158,7 +158,7 @@ desk = pygame.sprite.GroupSingle()
 desk.add(Object("Assets/Images/desk.png", 700, -240, 80, 110)) 
 
 desk2 = pygame.sprite.GroupSingle()
-desk2.add(Object("Assets/Images/desk.png", 1000, -240, 80, 110))
+desk2.add(Object("Assets/Images/desk_variant2.png", 1000, -240, 80, 110))
 
 desk3 = pygame.sprite.GroupSingle()
 desk3.add(Object("Assets/Images/desk.png", 1300, -240, 80, 110)) 
