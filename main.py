@@ -17,17 +17,17 @@ object_scale = 1.5
 col = False
 try_move = []
 
-#text properties
-font_buttons = pygame.font.SysFont('Ariel', 35)
-text = font_buttons.render("Play", True, (255, 255, 255))
-
 #ticks
 FPS = 60
 clock = pygame.time.Clock()
 
 #screen_properties
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('test')
+pygame.display.set_caption('Learn To Space')
+
+#pygame icon
+icon = pygame.image.load('Assets\Images\icon.png')
+pygame.display.set_icon(icon)
 
 #classes
 class Player(pygame.sprite.Sprite):
