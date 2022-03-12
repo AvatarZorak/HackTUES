@@ -120,7 +120,7 @@ class Background(pygame.sprite.Sprite):
 class Object(pygame.sprite.Sprite):
     def __init__(self, design, x, y, height, width): 
         super().__init__()
-        self.x = x
+        self.x = x #x coordinate
         self.y = y
         self.height = height
         self.width = width
@@ -181,21 +181,54 @@ paper.add(Paper(450, -50))
 
 
 desk = pygame.sprite.GroupSingle()
-desk.add(Object("Assets/Images/objects/desk.png", 490, -50, 80, 110)) 
+desk.add(Object("Assets/Images/desk.png", 700, -240, 80, 110)) 
+
+desk2 = pygame.sprite.GroupSingle()
+desk2.add(Object("Assets/Images/desk_variant2.png", 1000, -240, 80, 110))
+
+desk3 = pygame.sprite.GroupSingle()
+desk3.add(Object("Assets/Images/desk.png", 1300, -240, 80, 110)) 
 
 chair = pygame.sprite.GroupSingle()
-chair.add(Object("Assets/Images/objects/Object.png", 840 ,-55, 60, 40))   
+chair.add(Object("Assets/Images/Object.png", 690 ,-225, 60, 40))
 
-wall_up = pygame.sprite.GroupSingle()
-wall_up.add(Object("Assets/Images/objects/wall_up.png", 500 ,-300, 60, 1000))
+chair2 = pygame.sprite.GroupSingle()
+chair2.add(Object("Assets/Images/Object.png", 990 ,-225, 60, 40))
+
+chair3 = pygame.sprite.GroupSingle()
+chair3.add(Object("Assets/Images/Object.png", 1290 ,-225, 60, 40))
 
 wall_down = pygame.sprite.GroupSingle()
-wall_down.add(Object("Assets/Images/objects/wall_down.png", 600 ,600, 60, 1000))
+wall_down.add(Object("Assets/Images/wall_ud.png", 605, 1110, 60, 2100))
+
+wall_down2 = pygame.sprite.GroupSingle()
+wall_down2.add(Object("Assets/Images/wall_ud.png", 880, 150, 60, 800))
+
+wall_up = pygame.sprite.GroupSingle() 
+wall_up.add(Object("Assets/Images/wall_ud.png", 1350 ,-300, 60, 1150))
+
+wall_up2 = pygame.sprite.GroupSingle()
+wall_up2.add(Object("Assets/Images/wall_ud.png", 650 , -610, 60, 2510))
+
+wall_left = pygame.sprite.GroupSingle()
+wall_left.add(Object("Assets/Images/wall_lr.png", -205, 450, 1410, 60))
+
+wall_left2 = pygame.sprite.GroupSingle()
+wall_left2.add(Object("Assets/Images/wall_lr.png", 305, 900, 310, 60))
+
+wall_right = pygame.sprite.GroupSingle()
+wall_right.add(Object("Assets/Images/wall_lr.png", 1500, -500, 1200, 60))
+
+wall_right2 = pygame.sprite.GroupSingle()
+wall_right2.add(Object("Assets/Images/wall_lr.png", 1500, -700, 600, 60))
+
+wall_right3 = pygame.sprite.GroupSingle()
+wall_right3.add(Object("Assets/Images/wall_lr.png", 2200, 400, 1600, 60))
 
 shelf = pygame.sprite.GroupSingle()
-shelf.add(Object("Assets/Images/objects/shelf.png", 340 ,-245, 90, 300))   
+shelf.add(Object("Assets/Images/shelf.png", 300 ,-300, 90, 300))   
 
-#functions
+#functions ###################################################################
 def main():
     run = True
     main_menu = True
@@ -216,20 +249,31 @@ def main():
 
     pygame.quit()
 
-def reversemove(sprite):
+def reversemove(sprite): #rollback if collide
     for i in try_move:
             if i == "+x": sprite.rect.x -= 4
             elif i == "+y": sprite.rect.y -= 4
             elif i == "-x": sprite.rect.x += 4
             elif i == "-y": sprite.rect.y += 4
 
-def dontmove(self):
+def dontmove(self): #initiate rollback #####################################################
     reversemove(desk.sprite)
     reversemove(chair.sprite)
     reversemove(shelf.sprite)
+    reversemove(desk2.sprite)
+    reversemove(chair2.sprite)
     reversemove(floor.sprite)
     reversemove(wall_up.sprite)
     reversemove(wall_down.sprite)
+    reversemove(wall_left.sprite)
+    reversemove(wall_right.sprite)
+    reversemove(wall_up2.sprite)
+    reversemove(wall_right2.sprite)
+    reversemove(wall_down2.sprite)
+    reversemove(desk3.sprite)
+    reversemove(chair3.sprite)
+    reversemove(wall_left2.sprite)
+    reversemove(wall_right3.sprite)
 
 #display
 def draw_game():
@@ -237,20 +281,46 @@ def draw_game():
     
     floor.draw(screen)
     player.draw(screen)
+    wall_left2.draw(screen)
+    wall_right2.draw(screen)
     wall_up.draw(screen)
+    wall_right.draw(screen)
+    shelf.draw(screen)
     wall_down.draw(screen)
+    wall_down2.draw(screen)
+    wall_up2.draw(screen)
+    wall_left.draw(screen)
     desk.draw(screen)
     chair.draw(screen)
-    shelf.draw(screen)
+
     paper.draw(screen)
 
+    desk2.draw(screen)
+    chair2.draw(screen)
+    desk3.draw(screen)
+    chair3.draw(screen)
+    wall_right3.draw(screen)
+    
+    ########################################################################
     paper.update()
+
     player.update()
+    wall_right2.update()
     wall_up.update()
     wall_down.update()
+    wall_left.update()
+    wall_right.update()
+    wall_up2.update()
     desk.update()
     chair.update()
     shelf.update()
+    desk2.update()
+    chair2.update()
+    wall_down2.update()
+    desk3.update()
+    chair3.update()
+    wall_left2.update()
+    wall_right3.update()
     
     floor.update()
 
