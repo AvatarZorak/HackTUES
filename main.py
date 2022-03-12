@@ -165,7 +165,7 @@ class Paper(pygame.sprite.Sprite):
         self.x = x
         self.y = y
         self.update()
-        self.image = pygame.transform.scale(pygame.image.load("assets/images/papers/paper_2.png"), (50, 50))
+        self.image = pygame.transform.scale(pygame.image.load("assets/images/papers/paper.png"), (50, 50))
         self.rect = self.image.get_rect(center = (self.x, self.y))
 
     def movement(self):
@@ -187,8 +187,8 @@ class Paper(pygame.sprite.Sprite):
             dontmove(self)
 
     def check_col(self):
-        global col
         col = pygame.sprite.collide_rect(self, player.sprite)
+        return col
 
 #definition of objects
 player = pygame.sprite.GroupSingle()
@@ -197,9 +197,14 @@ player.add(Player())
 floor = pygame.sprite.GroupSingle()
 floor.add(Background())
 
-paper = pygame.sprite.GroupSingle()
-paper.add(Paper(0,0))
+paper1 = pygame.sprite.GroupSingle()
+paper1.add(Paper(0,0))
 
+paper2 = pygame.sprite.GroupSingle()
+paper2.add(Paper(100,100))
+
+paper3 = pygame.sprite.GroupSingle()
+paper3.add(Paper(200,200))
 
 desk = pygame.sprite.GroupSingle()
 desk.add(Object("Assets/Images/objects/desk.png", 700, -240, 80, 110)) 
@@ -249,6 +254,10 @@ wall_right3.add(Object("Assets/Images/objects/wall_lr.png", 2200, 400, 1600, 60)
 shelf = pygame.sprite.GroupSingle()
 shelf.add(Object("Assets/Images/objects/shelf.png", 300 ,-300, 90, 300))   
 
+list = [paper1, paper2, paper3]
+counter = 0
+is_quest_1_screen = False
+
 #functions ###################################################################
 def main():
     run = True
@@ -295,13 +304,42 @@ def dontmove(self): #initiate rollback #########################################
     reversemove(chair3.sprite)
     reversemove(wall_left2.sprite)
     reversemove(wall_right3.sprite)
-    reversemove(paper.sprite)
+    reversemove(paper1.sprite)
+    reversemove(paper2.sprite)
+    reversemove(paper3.sprite)
+
+def is_open():
+    key_pressed = pygame.key.get_pressed()
+    if key_pressed[pygame.K_ESCAPE]:
+        return False
+    return True
 
 #display
 def draw_game():
     screen.fill((0, 0, 0))
     
     floor.draw(screen)
+
+    key = pygame.key.get_pressed()
+
+    global counter
+
+    if paper1.sprite.check_col() and key[pygame.K_e] and paper1 in list:
+        list.remove(paper1)
+        counter += 1
+
+    if paper2.sprite.check_col() and key[pygame.K_e] and paper2 in list:
+        list.remove(paper2)
+        counter += 1
+
+    if paper3.sprite.check_col() and key[pygame.K_e] and paper3 in list:
+        list.remove(paper3)
+        counter += 1
+
+
+    for i in list:
+        i.draw(screen)    
+
     player.draw(screen)
     wall_left2.draw(screen)
     wall_right2.draw(screen)
@@ -315,21 +353,31 @@ def draw_game():
     desk.draw(screen)
     chair.draw(screen)
 
-    list = [3]
-    key = pygame.key.get_pressed()
-    if col == True and key[pygame.K_e]:
-        list.append()
-    for i in list:
-        paper.draw(screen)
-
     desk2.draw(screen)
     chair2.draw(screen)
     desk3.draw(screen)
     chair3.draw(screen)
     wall_right3.draw(screen)
     
+
+    for i in range(counter):
+        image = pygame.image.load("assets/images/papers/paper.png")
+        screen.blit(pygame.transform.scale(image, (50, 50)), (i * 50, 0))
+
+    global is_quest_1_screen
+
+    key_pressed = pygame.key.get_pressed()
+    if len(list) == 0 and key_pressed[pygame.K_q]:
+        is_quest_1_screen = True
+
+    if is_quest_1_screen:
+        is_quest_1_screen = is_open()
+        screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text.png"), (screen_width, screen_height)), (0, 0))
+
     ########################################################################
-    paper.update()
+    paper1.update()
+    paper2.update()
+    paper3.update()
 
     player.update()
     wall_right2.update()
