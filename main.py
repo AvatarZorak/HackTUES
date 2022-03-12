@@ -25,6 +25,10 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Learn To Space')
 
+#pygame icon
+icon = pygame.image.load('Assets\Images\icon.png')
+pygame.display.set_icon(icon)
+
 #classes
 class Player(pygame.sprite.Sprite):
     def __init__(self):
