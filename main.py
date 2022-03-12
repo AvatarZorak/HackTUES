@@ -164,10 +164,31 @@ class Paper(pygame.sprite.Sprite):
         super().__init__()
         self.x = x
         self.y = y
-        self.image = pygame.transform.scale(pygame.image.load("assets/images/papers/paper.png"), (40, 40))
-        self.rect = self.image.get_rect(center = (screen_width/2 + 150, screen_height/2 - 200))
-        
+        self.update()
+        self.image = pygame.transform.scale(pygame.image.load("assets/images/papers/paper_2.png"), (50, 50))
+        self.rect = self.image.get_rect(center = (self.x, self.y))
 
+    def movement(self):
+        key = pygame.key.get_pressed()
+        if key[pygame.K_a] and floor.sprite.rect.left < screen_width/2: 
+            self.rect.x += 4
+        if key[pygame.K_w] and floor.sprite.rect.top < screen_height/2:
+            self.rect.y +=4
+        if key[pygame.K_d] and floor.sprite.rect.right > screen_width - screen_width/2:
+            self.rect.x -= 4
+        if key[pygame.K_s] and floor.sprite.rect.bottom > screen_height - screen_height/2:
+            self.rect.y -= 4
+
+    def update(self):
+        global col
+        self.movement()
+        
+        if col:
+            dontmove(self)
+
+    def check_col(self):
+        global col
+        col = pygame.sprite.collide_rect(self, player.sprite)
 
 #definition of objects
 player = pygame.sprite.GroupSingle()
@@ -177,7 +198,7 @@ floor = pygame.sprite.GroupSingle()
 floor.add(Background())
 
 paper = pygame.sprite.GroupSingle()
-paper.add(Paper(450, -50))
+paper.add(Paper(0,0))
 
 
 desk = pygame.sprite.GroupSingle()
@@ -274,6 +295,7 @@ def dontmove(self): #initiate rollback #########################################
     reversemove(chair3.sprite)
     reversemove(wall_left2.sprite)
     reversemove(wall_right3.sprite)
+    reversemove(paper.sprite)
 
 #display
 def draw_game():
@@ -293,7 +315,12 @@ def draw_game():
     desk.draw(screen)
     chair.draw(screen)
 
-    paper.draw(screen)
+    list = [3]
+    key = pygame.key.get_pressed()
+    if col == True and key[pygame.K_e]:
+        list.append()
+    for i in list:
+        paper.draw(screen)
 
     desk2.draw(screen)
     chair2.draw(screen)
