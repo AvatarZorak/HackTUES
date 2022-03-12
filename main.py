@@ -130,7 +130,8 @@ class Object(pygame.sprite.Sprite):
        
     def check_col(self):
         global col
-        col = pygame.sprite.collide_rect(self, player.sprite)
+        col = pygame.sprite.collide_rect(self, player.sprite) 
+        
        
     def trymovement(self):
         global try_move
@@ -166,6 +167,8 @@ class Paper(pygame.sprite.Sprite):
         self.y = y
         self.image = pygame.transform.scale(pygame.image.load("assets/images/papers/paper.png"), (40, 40))
         self.rect = self.image.get_rect(center = (screen_width/2 + 150, screen_height/2 - 200))
+        
+        
         
 
 
@@ -205,7 +208,9 @@ def main():
         
         if main_menu:
             main_menu = menu()
+            
         else:
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
@@ -213,6 +218,9 @@ def main():
                     print(pygame.mouse.get_pos())
             draw_game()
             pygame.display.update()
+            #print(floor.sprite.rect.y)
+            #quest2()
+            
 
     pygame.quit()
 
@@ -230,6 +238,7 @@ def dontmove(self):
     reversemove(floor.sprite)
     reversemove(wall_up.sprite)
     reversemove(wall_down.sprite)
+    
 
 #display
 def draw_game():
@@ -253,6 +262,26 @@ def draw_game():
     shelf.update()
     
     floor.update()
+    
+    if desk_col() == True:
+        quest2()
+                    
+    
+    
+    
+def desk_col():
+    global deskcol 
+    key_pressed = pygame.key.get_pressed()
+    deskcol = floor.sprite.rect.x < - 1430 and floor.sprite.rect.x > -1590 and floor.sprite.rect.y == -672 
+    return deskcol
+        
+     
+def quest2():
+    
+    screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/quest_2.png"), (screen_width, screen_height)), (0, 0))
+    
+    
+
 
 #call main function
 if __name__ == "__main__":
