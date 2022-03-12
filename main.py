@@ -321,15 +321,7 @@ is_quest_2_screen_completed = False
 starting_point = None
 
 sentence = []
-
-facts = ["Учените смятат, че в центъра на почти всяка галактика има супермасивна черна дупка.\n Тези черни дупки всъщност закрепват галактиките, като ги държат заедно в пространството.\n Черната дупка в центъра на Млечния път, Стрелец А, е повече от четири милиона пъти по-масивна от нашето Слънце.",
-         "",
-         "",
-         "",
-         "",
-         "",
-         ""
-        ]
+books = []
 
 #functions ###################################################################
 def main():
@@ -482,10 +474,6 @@ def draw_game():
     if is_quest_1_screen:
         is_quest_1_screen = is_open()
         screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text.png"), (screen_width, screen_height)), (0, 0))
-        font = pygame.font.SysFont('Calibri', 30)
-        text = font.render(facts[0], True, (0, 0, 0))
-        screen.blit(pygame.transform.scale(text, (screen_width, 100)), (100, 100))
-
 
     if desk_col() == True:
         is_quest_2_screen = True
@@ -500,8 +488,6 @@ def draw_game():
                 sentence.append(event.unicode)
 
         for i in range(36):
-            image = pygame.image.load("assets/images/point.png")
-
             if i < len(sentence):
                 image = pygame.image.load("assets/images/point_typed.png")
                 screen.blit(pygame.transform.scale(image, (35, 35)), ((i * 30) + 100, 550)) 
@@ -525,7 +511,40 @@ def draw_game():
                     screen.blit(pygame.image.load("assets/images/backgrounds/error.png"), (550, 350))
                 else:
                     starting_point = None
-                    sentence.clear()     
+                    sentence.clear()
+
+    if shelf_col():
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and len(books) <= 9:
+                books.append(event.unicode)
+
+        for i in range(9):
+            if i < len(books):
+                image = pygame.image.load("assets/images/rect_clicked.png")
+                screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 100, 550)) 
+            else:    
+                image = pygame.image.load("assets/images/rect.png")
+                screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 100, 550))
+
+        if len(books) >= 9:
+            books_string = ''.join(books)
+            if books_string == "123412458":
+                if is_open():
+                    screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text2.png"), (screen_width-200, screen_height-200)), (100, 100))
+            else:
+
+                if starting_point == None:
+                    starting_point = datetime.datetime.now()
+                
+                current_point = datetime.datetime.now()
+                if (current_point - starting_point).seconds < 5:
+                    for i in range(9):
+                        image = pygame.image.load("assets/images/rect_wrong.png")
+                        screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 100, 550))
+                else:
+                    starting_point = None
+                    books.clear()
+
 
     ########################################################################
     paper1.update()
@@ -569,14 +588,18 @@ def draw_game():
         box4.update()
     
     floor.update()
-    
+
+    #print(floor.sprite.rect.x, floor.sprite.rect.y)
     
 def desk_col():
-    global deskcol
-    global is_quest_2_screen
     key_pressed = pygame.key.get_pressed()
-    deskcol = floor.sprite.rect.x < - 2150 and floor.sprite.rect.x > -2350 and floor.sprite.rect.y == -408 and key_pressed[pygame.K_p]
+    deskcol = floor.sprite.rect.x < -2150 and floor.sprite.rect.x > -2350 and floor.sprite.rect.y == -408 and key_pressed[pygame.K_p]
     return deskcol
+
+def shelf_col():
+    key_pressed = pygame.key.get_pressed()
+    shelfcol = floor.sprite.rect.x < -1340 and floor.sprite.rect.x > -1590 and floor.sprite.rect.y == -1412
+    return shelfcol 
 
 #call main function
 if __name__ == "__main__":
