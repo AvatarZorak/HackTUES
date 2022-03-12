@@ -214,16 +214,22 @@ desk2 = pygame.sprite.GroupSingle()
 desk2.add(Object("Assets/Images/objects/desk_variant2.png", 1000, -240, 80, 110))
 
 desk3 = pygame.sprite.GroupSingle()
-desk3.add(Object("Assets/Images/objects/desk.png", 1300, -240, 80, 110)) 
+desk3.add(Object("Assets/Images/objects/desk_task2.png", 1300, -240, 80, 110))
+
+desk4 = pygame.sprite.GroupSingle()
+desk4.add(Object("Assets/Images/objects/desk_variant2.png", 1350 ,230, 80, 110))
+
+desk5 = pygame.sprite.GroupSingle()
+desk5.add(Object("Assets/Images/objects/desk.png", 850 ,770, 80, 110))
 
 chair = pygame.sprite.GroupSingle()
-chair.add(Object("Assets/Images/objects/Object.png", 690 ,-225, 60, 40))
+chair.add(Object("Assets/Images/objects/chair.png", 690 ,-225, 60, 40))
 
 chair2 = pygame.sprite.GroupSingle()
-chair2.add(Object("Assets/Images/objects/Object.png", 990 ,-225, 60, 40))
+chair2.add(Object("Assets/Images/objects/chair.png", 990 ,-225, 60, 40))
 
 chair3 = pygame.sprite.GroupSingle()
-chair3.add(Object("Assets/Images/objects/Object.png", 1290 ,-225, 60, 40))
+chair3.add(Object("Assets/Images/objects/chair.png", 1290 ,-225, 60, 40))
 
 wall_down = pygame.sprite.GroupSingle()
 wall_down.add(Object("Assets/Images/objects/wall_ud.png", 605, 1110, 60, 2100))
@@ -253,7 +259,49 @@ wall_right3 = pygame.sprite.GroupSingle()
 wall_right3.add(Object("Assets/Images/objects/wall_lr.png", 2200, 400, 1600, 60))
 
 shelf = pygame.sprite.GroupSingle()
-shelf.add(Object("Assets/Images/objects/shelf.png", 300 ,-300, 90, 300))   
+shelf.add(Object("Assets/Images/objects/shelf.png", 300 ,-300, 90, 300))
+
+shelf2 = pygame.sprite.GroupSingle()
+shelf2.add(Object("Assets/Images/objects/shelf_variant2.png", 500 ,200, 90, 300))
+
+shelf3 = pygame.sprite.GroupSingle()
+shelf3.add(Object("Assets/Images/objects/shelf_variant2.png", 1000 ,200, 90, 300))
+
+shelf4 = pygame.sprite.GroupSingle()
+shelf4.add(Object("Assets/Images/objects/shelf_task3.png", 550 ,750, 100, 250))
+
+shelf5 = pygame.sprite.GroupSingle()
+shelf5.add(Object("Assets/Images/objects/shelf.png", 1750 ,-220, 100, 250))
+
+pot = pygame.sprite.GroupSingle()
+pot.add(Object("Assets/Images/objects/emptypot.png", 2100 ,1030, 20, 40))
+
+pot2 = pygame.sprite.GroupSingle()
+pot2.add(Object("Assets/Images/objects/emptypot.png", 2100 ,-230, 20, 40))
+
+table = pygame.sprite.GroupSingle()
+table.add(Object("Assets/Images/objects/table.png", 2050 ,230, 80, 80))
+
+table2 = pygame.sprite.GroupSingle()
+table2.add(Object("Assets/Images/objects/table.png", 2050 ,430, 80, 80))
+
+table3 = pygame.sprite.GroupSingle()
+table3.add(Object("Assets/Images/objects/table_variant2.png", 2050 ,630, 80, 80))
+
+box = pygame.sprite.GroupSingle()
+box.add(Object("Assets/Images/objects/box.png", 1390 ,-430, 80, 80))
+
+box2 = pygame.sprite.GroupSingle()
+box2.add(Object("Assets/Images/objects/box.png", 1290 ,-470, 100, 100))
+
+box3 = pygame.sprite.GroupSingle()
+box3.add(Object("Assets/Images/objects/box.png", 1250 ,-400, 40, 40))
+
+box4 = pygame.sprite.GroupSingle()
+box4.add(Object("Assets/Images/objects/box.png", 0 ,1000, 80, 80))
+
+telescope = pygame.sprite.GroupSingle()
+telescope.add(Object("Assets/Images/objects/Telescope.png", 150, 990, 75, 45))
 
 list = [paper1, paper2, paper3]
 counter = 0
@@ -305,9 +353,26 @@ def dontmove(self): #initiate rollback #########################################
     reversemove(wall_right2.sprite)
     reversemove(wall_down2.sprite)
     reversemove(desk3.sprite)
+    reversemove(desk4.sprite)
     reversemove(chair3.sprite)
     reversemove(wall_left2.sprite)
     reversemove(wall_right3.sprite)
+    reversemove(shelf2.sprite)
+    reversemove(shelf3.sprite)
+    reversemove(shelf4.sprite)
+    reversemove(desk5.sprite)
+    reversemove(shelf5.sprite)
+    reversemove(pot.sprite)
+    reversemove(pot2.sprite)
+    reversemove(table.sprite)
+    reversemove(table2.sprite)
+    reversemove(table3.sprite)
+    reversemove(box.sprite)
+    reversemove(box2.sprite)
+    reversemove(box3.sprite)
+    reversemove(box4.sprite)
+    reversemove(telescope.sprite)
+    
     reversemove(paper1.sprite)
     reversemove(paper2.sprite)
     reversemove(paper3.sprite)
@@ -352,18 +417,32 @@ def draw_game():
     shelf.draw(screen)
     wall_down.draw(screen)
     wall_down2.draw(screen)
+    shelf2.draw(screen)
+    shelf3.draw(screen)
+    shelf4.draw(screen)
     wall_up2.draw(screen)
     wall_left.draw(screen)
     desk.draw(screen)
     chair.draw(screen)
-
     desk2.draw(screen)
     chair2.draw(screen)
     desk3.draw(screen)
     chair3.draw(screen)
+    desk4.draw(screen)
+    desk5.draw(screen)
     wall_right3.draw(screen)
+    shelf5.draw(screen)
+    pot.draw(screen)
+    pot2.draw(screen)
+    table.draw(screen)
+    table2.draw(screen)
+    table3.draw(screen)
+    box2.draw(screen)
+    box.draw(screen)
+    box3.draw(screen)
+    box4.draw(screen)
+    telescope.draw(screen)
     
-
     for i in range(counter):
         image = pygame.image.load("assets/images/papers/paper.png")
         screen.blit(pygame.transform.scale(image, (50, 50)), (i * 50, 0))
@@ -391,7 +470,7 @@ def draw_game():
             if event.type == pygame.KEYDOWN:
                 sentence.append(event.unicode)
 
-        for i in range(37):
+        for i in range(36):
             image = pygame.image.load("assets/images/point.png")
 
             if i < len(sentence):
@@ -430,6 +509,22 @@ def draw_game():
     chair3.update()
     wall_left2.update()
     wall_right3.update()
+    shelf2.update()
+    shelf3.update()
+    desk4.update()
+    shelf4.update()
+    desk5.update()
+    shelf5.update()
+    pot.update()
+    pot2.update()
+    table.update()
+    table2.update()
+    table3.update()
+    box.update()
+    box2.update()
+    box3.update()
+    telescope.update()
+    box4.update()
     
     floor.update()
     
