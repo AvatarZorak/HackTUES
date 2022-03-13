@@ -636,3 +636,36 @@ def hologram1_col():
 #call main function
 if __name__ == "__main__":
     main()
+
+is_quest_4_screen = False
+levers = []
+
+def board_col():
+    key_pressed = pygame.key.get_pressed()
+    boardcol = floor.sprite.rect.x < None and floor.sprite.rect.x > None and floor.sprite.rect.y == None and key_pressed[pygame.K_p]
+    return boardcol
+
+if board_col():
+    is_quest_4_screen = True
+
+if is_quest_4_screen:
+    is_quest_4_screen = is_open()
+    for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN and len(levers) < 3:
+            mouse = pygame.mouse.get_pos()
+            if None < mouse[0] < None and None < mouse[1] < None:
+                levers.append(1)
+            
+            if None < mouse[0] < None and None < mouse[1] < None:
+                levers.append(2)
+
+            if None < mouse[0] < None and None < mouse[1] < None:
+                levers.append(3)
+
+    if len(levers) == 3:
+        levers_string = ''.join(levers)
+        if levers_string == "213":
+            image = pygame.image.load("assets/images/backgrounds/lever_board.png")
+            screen.blit()
+        else:
+            pass
