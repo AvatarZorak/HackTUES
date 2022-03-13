@@ -16,8 +16,12 @@ background_scale = 3.5
 object_scale = 1.5
 
 #global variables
+level = 1
 col = False
 try_move = []
+paper_complete = True
+book_complete = True
+computer_complete = True
 
 #ticks
 FPS = 60
@@ -202,6 +206,7 @@ class Paper(pygame.sprite.Sprite):
 paper_positions = [[0, 0], [100, 100], [200, 200], [500, 600], [372, 536], [1123, -888], [100, -500], [-100, 860], [1300, 860], [1700, 860]]
 
 #definition of objects
+#level 1
 player = pygame.sprite.GroupSingle()
 player.add(Player())
 
@@ -319,6 +324,9 @@ box4.add(Object("Assets/Images/objects/box.png", 0 ,1000, 80, 80))
 telescope = pygame.sprite.GroupSingle()
 telescope.add(Object("Assets/Images/objects/Telescope.png", 150, 990, 75, 45))
 
+hologram = pygame.sprite.GroupSingle()
+hologram.add(Object("Assets/Images/objects/hologram.png", -90, -580, 125, 75))
+
 list = [paper1, paper2, paper3]
 counter = 0
 is_quest_1_screen = False
@@ -331,6 +339,7 @@ books = []
 
 #functions ###################################################################
 def main():
+    global level
     run = True
     main_menu = True
 
@@ -358,39 +367,42 @@ def reversemove(sprite): #rollback if collide
             elif i == "-y": sprite.rect.y += 4
 
 def dontmove(self): #initiate rollback #####################################################
-    reversemove(desk.sprite)
-    reversemove(chair.sprite)
-    reversemove(shelf.sprite)
-    reversemove(desk2.sprite)
-    reversemove(chair2.sprite)
-    reversemove(floor.sprite)
-    reversemove(wall_up.sprite)
-    reversemove(wall_down.sprite)
-    reversemove(wall_left.sprite)
-    reversemove(wall_right.sprite)
-    reversemove(wall_up2.sprite)
-    reversemove(wall_right2.sprite)
-    reversemove(wall_down2.sprite)
-    reversemove(desk3.sprite)
-    reversemove(desk4.sprite)
-    reversemove(chair3.sprite)
-    reversemove(wall_left2.sprite)
-    reversemove(wall_right3.sprite)
-    reversemove(shelf2.sprite)
-    reversemove(shelf3.sprite)
-    reversemove(shelf4.sprite)
-    reversemove(desk5.sprite)
-    reversemove(shelf5.sprite)
-    reversemove(pot.sprite)
-    reversemove(pot2.sprite)
-    reversemove(table.sprite)
-    reversemove(table2.sprite)
-    reversemove(table3.sprite)
-    reversemove(box.sprite)
-    reversemove(box2.sprite)
-    reversemove(box3.sprite)
-    reversemove(box4.sprite)
-    reversemove(telescope.sprite)
+    global level
+    if level == 1:
+        reversemove(desk.sprite)
+        reversemove(chair.sprite)
+        reversemove(shelf.sprite)
+        reversemove(desk2.sprite)
+        reversemove(chair2.sprite)
+        reversemove(floor.sprite)
+        reversemove(wall_up.sprite)
+        reversemove(wall_down.sprite)
+        reversemove(wall_left.sprite)
+        reversemove(wall_right.sprite)
+        reversemove(wall_up2.sprite)
+        reversemove(wall_right2.sprite)
+        reversemove(wall_down2.sprite)
+        reversemove(desk3.sprite)
+        reversemove(desk4.sprite)
+        reversemove(chair3.sprite)
+        reversemove(wall_left2.sprite)
+        reversemove(wall_right3.sprite)
+        reversemove(shelf2.sprite)
+        reversemove(shelf3.sprite)
+        reversemove(shelf4.sprite)
+        reversemove(desk5.sprite)
+        reversemove(shelf5.sprite)
+        reversemove(pot.sprite)
+        reversemove(pot2.sprite)
+        reversemove(table.sprite)
+        reversemove(table2.sprite)
+        reversemove(table3.sprite)
+        reversemove(box.sprite)
+        reversemove(box2.sprite)
+        reversemove(box3.sprite)
+        reversemove(box4.sprite)
+        reversemove(telescope.sprite)
+        reversemove(hologram.sprite)
     
     reversemove(paper1.sprite)
     reversemove(paper2.sprite)
@@ -404,6 +416,8 @@ def is_open():
 
 #display
 def draw_game():
+    global paper_complete, book_complete, computer_complete, level
+    
     screen.fill((0, 0, 0))
     
     floor.draw(screen)
@@ -429,38 +443,41 @@ def draw_game():
         i.draw(screen)    
 
     player.draw(screen)
-    wall_left2.draw(screen)
-    wall_right2.draw(screen)
-    wall_up.draw(screen)
-    wall_right.draw(screen)
-    shelf.draw(screen)
-    wall_down.draw(screen)
-    wall_down2.draw(screen)
-    shelf2.draw(screen)
-    shelf3.draw(screen)
-    shelf4.draw(screen)
-    wall_up2.draw(screen)
-    wall_left.draw(screen)
-    desk.draw(screen)
-    chair.draw(screen)
-    desk2.draw(screen)
-    chair2.draw(screen)
-    desk3.draw(screen)
-    chair3.draw(screen)
-    desk4.draw(screen)
-    desk5.draw(screen)
-    wall_right3.draw(screen)
-    shelf5.draw(screen)
-    pot.draw(screen)
-    pot2.draw(screen)
-    table.draw(screen)
-    table2.draw(screen)
-    table3.draw(screen)
-    box2.draw(screen)
-    box.draw(screen)
-    box3.draw(screen)
-    box4.draw(screen)
-    telescope.draw(screen)
+    
+    if level == 1:
+        wall_left2.draw(screen)
+        wall_right2.draw(screen)
+        wall_up.draw(screen)
+        wall_right.draw(screen)
+        shelf.draw(screen)
+        wall_down.draw(screen)
+        wall_down2.draw(screen)
+        shelf2.draw(screen)
+        shelf3.draw(screen)
+        shelf4.draw(screen)
+        wall_up2.draw(screen)
+        wall_left.draw(screen)
+        desk.draw(screen)
+        chair.draw(screen)
+        desk2.draw(screen)
+        chair2.draw(screen)
+        desk3.draw(screen)
+        chair3.draw(screen)
+        desk4.draw(screen)
+        desk5.draw(screen)
+        wall_right3.draw(screen)
+        shelf5.draw(screen)
+        pot.draw(screen)
+        pot2.draw(screen)
+        table.draw(screen)
+        table2.draw(screen)
+        table3.draw(screen)
+        box2.draw(screen)
+        box.draw(screen)
+        box3.draw(screen)
+        box4.draw(screen)
+        telescope.draw(screen)
+        hologram.draw(screen)
     
     for i in range(counter):
         image = pygame.image.load("assets/images/papers/paper.png")
@@ -472,6 +489,7 @@ def draw_game():
     key_pressed = pygame.key.get_pressed()
     if len(list) == 0 and key_pressed[pygame.K_q]:
         is_quest_1_screen = True
+        paper_complete = True
 
     if is_quest_1_screen:
         is_quest_1_screen = is_open()
@@ -479,6 +497,7 @@ def draw_game():
 
     if desk_col() == True:
         is_quest_2_screen = True
+        computer_complete = True
         
     if is_quest_2_screen == True:
         is_quest_2_screen = is_open()
@@ -533,6 +552,7 @@ def draw_game():
             if books_string == "123412458":
                 if is_open():
                     screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text3.png"), (screen_width-200, screen_height-200)), (100, 100))
+                    book_complete = True
             else:
 
                 if starting_point == None:
@@ -542,11 +562,14 @@ def draw_game():
                 if (current_point - starting_point).seconds < 5:
                     for i in range(9):
                         image = pygame.image.load("assets/images/rect_wrong.png")
-                        screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 400, 600))
+                        screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 500, 500))
                 else:
                     starting_point = None
                     books.clear()
-
+    
+    if hologram1_col():
+            level = 2
+            print("test")
 
     ########################################################################
     paper1.update()
@@ -554,42 +577,45 @@ def draw_game():
     paper3.update()
 
     player.update()
-    wall_right2.update()
-    wall_up.update()
-    wall_down.update()
-    wall_left.update()
-    wall_right.update()
-    wall_up2.update()
-    desk.update()
-    chair.update()
-    shelf.update()
-    desk2.update()
-    chair2.update()
-    wall_down2.update()
-    desk3.update()
-    chair3.update()
-    wall_left2.update()
-    wall_right3.update()
-    shelf2.update()
-    shelf3.update()
-    desk4.update()
-    shelf4.update()
-    desk5.update()
-    shelf5.update()
-    pot.update()
-    pot2.update()
-    table.update()
-    table2.update()
-    table3.update()
-    box.update()
-    box2.update()
-    box3.update()
-    telescope.update()
-    box4.update()
+    
+    if level == 1:
+        wall_right2.update()
+        wall_up.update()
+        wall_down.update()
+        wall_left.update()
+        wall_right.update()
+        wall_up2.update()
+        desk.update()
+        chair.update()
+        shelf.update()
+        desk2.update()
+        chair2.update()
+        wall_down2.update()
+        desk3.update()
+        chair3.update()
+        wall_left2.update()
+        wall_right3.update()
+        shelf2.update()
+        shelf3.update()
+        desk4.update()
+        shelf4.update()
+        desk5.update()
+        shelf5.update()
+        pot.update()
+        pot2.update()
+        table.update()
+        table2.update()
+        table3.update()
+        box.update()
+        box2.update()
+        box3.update()
+        telescope.update()
+        box4.update()
+        hologram.update()
     
     floor.update()
 
-    #print(floor.sprite.rect.x, floor.sprite.rect.y)
+    #print(floor.sprite.rect.x, floor.sprite.rect.y)    
     
 def desk_col():
     key_pressed = pygame.key.get_pressed()
@@ -599,6 +625,13 @@ def desk_col():
 def shelf_col():
     shelfcol = floor.sprite.rect.x < -1300 and floor.sprite.rect.x > -1730 and floor.sprite.rect.y == -1412
     return shelfcol 
+
+def hologram1_col():
+    global paper_complete, book_complete, computer_complete
+    if paper_complete == book_complete == computer_complete == True:
+        key_pressed = pygame.key.get_pressed()
+        holocol = floor.sprite.rect.x < -800 and floor.sprite.rect.x > -1000 and (floor.sprite.rect.y == -100 or floor.sprite.rect.y == -20) and key_pressed[pygame.K_e]
+        return holocol
 
 #call main function
 if __name__ == "__main__":
