@@ -19,6 +19,9 @@ object_scale = 1.5
 level = 1
 col = False
 try_move = []
+paper_complete = True
+book_complete = True
+computer_complete = True
 
 #ticks
 FPS = 60
@@ -313,6 +316,9 @@ box4.add(Object("Assets/Images/objects/box.png", 0 ,1000, 80, 80))
 telescope = pygame.sprite.GroupSingle()
 telescope.add(Object("Assets/Images/objects/Telescope.png", 150, 990, 75, 45))
 
+hologram = pygame.sprite.GroupSingle()
+hologram.add(Object("Assets/Images/objects/hologram.png", -90, -580, 125, 75))
+
 list = [paper1, paper2, paper3]
 counter = 0
 is_quest_1_screen = False
@@ -325,6 +331,7 @@ books = []
 
 #functions ###################################################################
 def main():
+    global level
     run = True
     main_menu = True
 
@@ -387,6 +394,7 @@ def dontmove(self): #initiate rollback #########################################
         reversemove(box3.sprite)
         reversemove(box4.sprite)
         reversemove(telescope.sprite)
+        reversemove(hologram.sprite)
     
     reversemove(paper1.sprite)
     reversemove(paper2.sprite)
@@ -400,6 +408,8 @@ def is_open():
 
 #display
 def draw_game():
+    global paper_complete, book_complete, computer_complete, level
+    
     screen.fill((0, 0, 0))
     
     floor.draw(screen)
@@ -459,6 +469,7 @@ def draw_game():
         box3.draw(screen)
         box4.draw(screen)
         telescope.draw(screen)
+        hologram.draw(screen)
     
     for i in range(counter):
         image = pygame.image.load("assets/images/papers/paper.png")
@@ -470,6 +481,7 @@ def draw_game():
     key_pressed = pygame.key.get_pressed()
     if len(list) == 0 and key_pressed[pygame.K_q]:
         is_quest_1_screen = True
+        paper_complete = True
 
     if is_quest_1_screen:
         is_quest_1_screen = is_open()
@@ -477,6 +489,7 @@ def draw_game():
 
     if desk_col() == True:
         is_quest_2_screen = True
+        computer_complete = True
         
     if is_quest_2_screen == True:
         is_quest_2_screen = is_open()
@@ -530,6 +543,7 @@ def draw_game():
             books_string = ''.join(books)
             if books_string == "123412458":
                 if is_open():
+                    book_complete = True
                     screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text2.png"), (screen_width-200, screen_height-200)), (100, 100))
             else:
 
@@ -544,6 +558,10 @@ def draw_game():
                 else:
                     starting_point = None
                     books.clear()
+    
+    if hologram1_col():
+            level = 2
+            print("test")
 
     ########################################################################
     paper1.update()
@@ -585,10 +603,11 @@ def draw_game():
         box3.update()
         telescope.update()
         box4.update()
+        hologram.update()
     
     floor.update()
 
-    #print(floor.sprite.rect.x, floor.sprite.rect.y)
+    #print(floor.sprite.rect.x, floor.sprite.rect.y)    
     
 def desk_col():
     key_pressed = pygame.key.get_pressed()
@@ -596,9 +615,15 @@ def desk_col():
     return deskcol
 
 def shelf_col():
-    key_pressed = pygame.key.get_pressed()
     shelfcol = floor.sprite.rect.x < -1340 and floor.sprite.rect.x > -1590 and floor.sprite.rect.y == -1412
-    return shelfcol 
+    return shelfcol
+
+def hologram1_col():
+    global paper_complete, book_complete, computer_complete
+    if paper_complete == book_complete == computer_complete == True:
+        key_pressed = pygame.key.get_pressed()
+        holocol = floor.sprite.rect.x < -800 and floor.sprite.rect.x > -1000 and (floor.sprite.rect.y == -100 or floor.sprite.rect.y == -20) and key_pressed[pygame.K_e]
+        return holocol
 
 #call main function
 if __name__ == "__main__":
