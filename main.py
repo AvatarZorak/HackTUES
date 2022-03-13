@@ -199,6 +199,8 @@ class Paper(pygame.sprite.Sprite):
         col = pygame.sprite.collide_rect(self, player.sprite)
         return col
 
+paper_positions = [[0, 0], [100, 100], [200, 200], [500, 600], [372, 536], [1123, -888], [100, -500], [-100, 860], [1300, 860], [1700, 860]]
+
 #definition of objects
 player = pygame.sprite.GroupSingle()
 player.add(Player())
@@ -207,13 +209,19 @@ floor = pygame.sprite.GroupSingle()
 floor.add(Background())
 
 paper1 = pygame.sprite.GroupSingle()
-paper1.add(Paper(0,0))
+coordinates = random.randint(0, 9)
+paper1.add(Paper(paper_positions[coordinates][0], paper_positions[coordinates][1]))
+paper_positions.pop(coordinates)
 
 paper2 = pygame.sprite.GroupSingle()
-paper2.add(Paper(100 ,100))
+coordinates = random.randint(0, 8)
+paper2.add(Paper(paper_positions[coordinates][0], paper_positions[coordinates][1]))
+paper_positions.pop(coordinates)
 
 paper3 = pygame.sprite.GroupSingle()
-paper3.add(Paper(200,200))
+coordinates = random.randint(0, 7)
+paper3.add(Paper(paper_positions[coordinates][0], paper_positions[coordinates][1]))
+paper_positions.pop(coordinates)
 
 desk = pygame.sprite.GroupSingle()
 desk.add(Object("Assets/Images/objects/desk.png", 700, -240, 80, 110)) 
@@ -481,17 +489,17 @@ def draw_game():
             if event.type == pygame.KEYDOWN:
                 sentence.append(event.unicode)
 
-        for i in range(36):
+        for i in range(18):
             if i < len(sentence):
                 image = pygame.image.load("assets/images/point_typed.png")
-                screen.blit(pygame.transform.scale(image, (35, 35)), ((i * 30) + 100, 550)) 
+                screen.blit(pygame.transform.scale(image, (35, 35)), ((i * 30) + 375, 550)) 
             else:    
                 image = pygame.image.load("assets/images/point.png")
-                screen.blit(pygame.transform.scale(image, (35, 35)), ((i * 30) + 100, 550))
+                screen.blit(pygame.transform.scale(image, (35, 35)), ((i * 30) + 375, 550))
 
-        if len(sentence) >= 36:
+        if len(sentence) >= 18:
             sentence_string = ''.join(sentence)
-            if sentence_string == "learn to space... explore the cosmos":
+            if sentence_string == "explore the cosmos":
                 if is_open():
                     screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text2.png"), (screen_width-200, screen_height-200)), (100, 100))
             else:
@@ -515,16 +523,16 @@ def draw_game():
         for i in range(9):
             if i < len(books):
                 image = pygame.image.load("assets/images/rect_clicked.png")
-                screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 100, 550)) 
+                screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 500, 500)) 
             else:    
                 image = pygame.image.load("assets/images/rect.png")
-                screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 100, 550))
+                screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 500, 500))
 
         if len(books) >= 9:
             books_string = ''.join(books)
             if books_string == "123412458":
                 if is_open():
-                    screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text2.png"), (screen_width-200, screen_height-200)), (100, 100))
+                    screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text3.png"), (screen_width-200, screen_height-200)), (100, 100))
             else:
 
                 if starting_point == None:
@@ -534,7 +542,7 @@ def draw_game():
                 if (current_point - starting_point).seconds < 5:
                     for i in range(9):
                         image = pygame.image.load("assets/images/rect_wrong.png")
-                        screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 100, 550))
+                        screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 400, 600))
                 else:
                     starting_point = None
                     books.clear()
@@ -589,8 +597,7 @@ def desk_col():
     return deskcol
 
 def shelf_col():
-    key_pressed = pygame.key.get_pressed()
-    shelfcol = floor.sprite.rect.x < -1340 and floor.sprite.rect.x > -1590 and floor.sprite.rect.y == -1412
+    shelfcol = floor.sprite.rect.x < -1300 and floor.sprite.rect.x > -1730 and floor.sprite.rect.y == -1412
     return shelfcol 
 
 #call main function
