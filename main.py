@@ -330,31 +330,34 @@ desk = pygame.sprite.GroupSingle()
 desk.add(Object("Assets/Images/objects/desk.png", 700, -240, 80, 110)) 
 
 wall_ud = pygame.sprite.GroupSingle()
-wall_ud.add(Object("Assets/Images/objects/wall_ud.png", 1070, 270, 60, 845))
+wall_ud.add(Object("Assets/Images/objects/1wall_ud.png", 1070, 270, 60, 845))
 
 wall_ud2 = pygame.sprite.GroupSingle()
-wall_ud2.add(Object("Assets/Images/objects/wall_ud.png", 1060, 1370, 60, 860))
+wall_ud2.add(Object("Assets/Images/objects/1wall_ud.png", 1060, 1370, 60, 860))
 
 wall_ud3 = pygame.sprite.GroupSingle()
-wall_ud3.add(Object("Assets/Images/objects/wall_ud.png", 2320, 570, 60, 820))
+wall_ud3.add(Object("Assets/Images/objects/1wall_ud.png", 2320, 570, 60, 820))
 
 wall_ud4 = pygame.sprite.GroupSingle()
-wall_ud4.add(Object("Assets/Images/objects/wall_ud.png", 2320, 1310, 60, 820))
+wall_ud4.add(Object("Assets/Images/objects/1wall_ud.png", 2320, 1310, 60, 820))
 
 wall_lr = pygame.sprite.GroupSingle()
-wall_lr.add(Object("Assets/Images/objects/wall_lr.png", 460, 350, 1410, 60))
+wall_lr.add(Object("Assets/Images/objects/1wall_lr.png", 460, 350, 1410, 60))
 
 wall_lr2 = pygame.sprite.GroupSingle()
-wall_lr2.add(Object("Assets/Images/objects/wall_lr.png", 1660, 50, 910, 60))
+wall_lr2.add(Object("Assets/Images/objects/1wall_lr.png", 1660, 50, 910, 60))
 
 wall_lr3 = pygame.sprite.GroupSingle()
-wall_lr3.add(Object("Assets/Images/objects/wall_lr.png", 2890, 950, 525, 60))
+wall_lr3.add(Object("Assets/Images/objects/1wall_lr.png", 2890, 950, 525, 60))
 
 wall_lr4 = pygame.sprite.GroupSingle()
-wall_lr4.add(Object("Assets/Images/objects/wall_lr.png", 1660, 1310, 140, 60))
+wall_lr4.add(Object("Assets/Images/objects/1wall_lr.png", 1660, 1310, 140, 60))
 
 shelf = pygame.sprite.GroupSingle()
 shelf.add(Object("Assets/Images/objects/shelf.png", 300 ,-300, 90, 300))
+
+device = pygame.sprite.GroupSingle()
+device.add(Object("Assets/Images/objects/device.png", 1420 ,450, 80, 250))
 
 table = pygame.sprite.GroupSingle()
 table.add(Object("Assets/Images/objects/table.png", 2050 ,230, 80, 80))
@@ -450,6 +453,7 @@ def dontmove(self): #initiate rollback #########################################
         reversemove(wall_lr2.sprite)
         reversemove(wall_ud4.sprite)
         reversemove(wall_lr4.sprite)
+        reversemove(device.sprite)
         
     reversemove(floor.sprite)
     
@@ -536,6 +540,7 @@ def draw_game():
         wall_lr2.draw(screen)
         wall_ud4.draw(screen)
         wall_lr4.draw(screen)
+        device.draw(screen)
     
     for i in range(counter):
         image = pygame.image.load("assets/images/papers/paper.png")
@@ -682,6 +687,7 @@ def draw_game():
         wall_lr2.update()
         wall_ud4.update()
         wall_lr4.update()
+        device.update()
     
     
     floor.update()
