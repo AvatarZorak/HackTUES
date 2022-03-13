@@ -510,10 +510,10 @@ def draw_game():
 
         for i in range(18):
             if i < len(sentence):
-                image = pygame.image.load("assets/images/point_typed.png")
+                image = pygame.image.load("assets/images/points/point_typed.png")
                 screen.blit(pygame.transform.scale(image, (35, 35)), ((i * 30) + 375, 550)) 
             else:    
-                image = pygame.image.load("assets/images/point.png")
+                image = pygame.image.load("assets/images/points/point.png")
                 screen.blit(pygame.transform.scale(image, (35, 35)), ((i * 30) + 375, 550))
 
         if len(sentence) >= 18:
@@ -541,10 +541,10 @@ def draw_game():
 
         for i in range(9):
             if i < len(books):
-                image = pygame.image.load("assets/images/rect_clicked.png")
+                image = pygame.image.load("assets/images/rects/rect_clicked.png")
                 screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 500, 500)) 
             else:    
-                image = pygame.image.load("assets/images/rect.png")
+                image = pygame.image.load("assets/images/rects/rect.png")
                 screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 500, 500))
 
         if len(books) >= 9:
@@ -561,7 +561,7 @@ def draw_game():
                 current_point = datetime.datetime.now()
                 if (current_point - starting_point).seconds < 5:
                     for i in range(9):
-                        image = pygame.image.load("assets/images/rect_wrong.png")
+                        image = pygame.image.load("assets/images/rects/rect_wrong.png")
                         screen.blit(pygame.transform.scale(image, (20, 30)), ((i * 30) + 500, 500))
                 else:
                     starting_point = None
