@@ -20,6 +20,7 @@ level = 1
 col = False
 try_move = []
 paper_complete, book_complete, computer_complete = True, True, True
+R, Y, G = False, False, False
 
 #ticks
 FPS = 60
@@ -326,8 +327,8 @@ hologram = pygame.sprite.GroupSingle()
 hologram.add(Object("Assets/Images/objects/hologram.png", -90, -580, 125, 75))
 
 #level2  ###################################################################
-desk = pygame.sprite.GroupSingle()
-desk.add(Object("Assets/Images/objects/desk.png", 700, -240, 80, 110)) 
+desklvl2 = pygame.sprite.GroupSingle()
+desklvl2.add(Object("Assets/Images/objects/desk.png", 900, 350, 80, 110)) 
 
 wall_ud = pygame.sprite.GroupSingle()
 wall_ud.add(Object("Assets/Images/objects/1wall_ud.png", 1070, 270, 60, 845))
@@ -353,20 +354,42 @@ wall_lr3.add(Object("Assets/Images/objects/1wall_lr.png", 2890, 950, 525, 60))
 wall_lr4 = pygame.sprite.GroupSingle()
 wall_lr4.add(Object("Assets/Images/objects/1wall_lr.png", 1660, 1310, 140, 60))
 
-shelf = pygame.sprite.GroupSingle()
-shelf.add(Object("Assets/Images/objects/shelf.png", 300 ,-300, 90, 300))
+shelflvl2 = pygame.sprite.GroupSingle()
+shelflvl2.add(Object("Assets/Images/objects/shelf_variant2.png", 750 ,700, 90, 300))
 
 device = pygame.sprite.GroupSingle()
 device.add(Object("Assets/Images/objects/device.png", 1420 ,450, 80, 250))
 
-table = pygame.sprite.GroupSingle()
-table.add(Object("Assets/Images/objects/table.png", 2050 ,230, 80, 80))
+tablelvl2 = pygame.sprite.GroupSingle()
+tablelvl2.add(Object("Assets/Images/objects/table_variant2.png", 850 ,1200, 80, 80))
 
 tree = pygame.sprite.GroupSingle()
 tree.add(Object("Assets/Images/objects/1tree.png", -500, -200, 70, 70))
 
-hologram = pygame.sprite.GroupSingle()
-hologram.add(Object("Assets/Images/objects/hologram.png", -90, -580, 125, 75))
+chairlvl2 = pygame.sprite.GroupSingle()
+chairlvl2.add(Object("Assets/Images/objects/1chair.png", 870, 1100, 90, 60))
+
+chairlvl23 = pygame.sprite.GroupSingle()
+chairlvl23.add(Object("Assets/Images/objects/1chair.png", 900, 400, 90, 60))
+
+tree = pygame.sprite.GroupSingle()
+tree.add(Object("Assets/Images/objects/1tree.png", 600, 1200, 100, 70))
+
+tree2 = pygame.sprite.GroupSingle()
+tree2.add(Object("Assets/Images/objects/1tree2.png", 2000, 600, 100, 70))
+
+tree3 = pygame.sprite.GroupSingle()
+tree3.add(Object("Assets/Images/objects/1tree2.png", 1500, 1250, 100, 70))
+
+tree4 = pygame.sprite.GroupSingle()
+tree4.add(Object("Assets/Images/objects/1tree3.png", 2550, 860, 100, 70))
+
+tree5 = pygame.sprite.GroupSingle()
+tree5.add(Object("Assets/Images/objects/1tree3.png", 2550, 970, 100, 70))
+
+hologramlvl2 = pygame.sprite.GroupSingle()
+hologramlvl2.add(Object("Assets/Images/objects/hologram.png", 2500, 880, 125, 75))
+hologramlvl2.sprite.image = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/objects/hologram.png').convert_alpha(), (125, 205 )), True, False)
 
 
 list = [paper1, paper2, paper3]
@@ -457,6 +480,17 @@ def dontmove(self): #initiate rollback #########################################
         reversemove(wall_ud4.sprite)
         reversemove(wall_lr4.sprite)
         reversemove(device.sprite)
+        reversemove(desklvl2.sprite)
+        reversemove(shelflvl2.sprite)
+        reversemove(tablelvl2.sprite)
+        reversemove(chairlvl2.sprite)
+        reversemove(chairlvl23.sprite)
+        reversemove(tree.sprite)
+        reversemove(tree2.sprite)
+        reversemove(tree3.sprite)
+        reversemove(hologramlvl2.sprite)
+        reversemove(tree4.sprite)
+        reversemove(tree5.sprite)
         
     reversemove(floor.sprite)
     
@@ -473,6 +507,8 @@ def is_open():
 #display
 def draw_game():
     global paper_complete, book_complete, computer_complete, level
+    global R, Y, G
+    
     
     screen.fill((0, 0, 0))
     
@@ -544,6 +580,17 @@ def draw_game():
         wall_ud4.draw(screen)
         wall_lr4.draw(screen)
         device.draw(screen)
+        desklvl2.draw(screen)
+        shelflvl2.draw(screen)
+        chairlvl2.draw(screen)
+        tablelvl2.draw(screen)
+        chairlvl23.draw(screen)
+        tree.draw(screen)
+        tree2.draw(screen)
+        tree3.draw(screen)
+        tree4.draw(screen)
+        hologramlvl2.draw(screen)
+        tree5.draw(screen)
     
     for i in range(counter):
         image = pygame.image.load("assets/images/papers/paper.png")
@@ -648,24 +695,33 @@ def draw_game():
 
     if is_quest_4_screen:
         is_quest_4_screen = is_open()
-        screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_board.png"), (screen_width, screen_height)), (0, 0))
+        if R:
+            if G: screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_boardRG.png"), (screen_width, screen_height)), (0, 0))
+            elif Y: screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_boardRY.png"), (screen_width, screen_height)), (0, 0))
+            else: screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_boardR.png"), (screen_width, screen_height)), (0, 0))
+        elif G:
+            if Y: screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_boardYG.png"), (screen_width, screen_height)), (0, 0))
+            else: screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_boardG.png"), (screen_width, screen_height)), (0, 0))
+        elif Y: screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_boardY.png"), (screen_width, screen_height)), (0, 0))
+        else: screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_board.png"), (screen_width, screen_height)), (0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN and len(levers) < 3:
                 mouse = pygame.mouse.get_pos()
                 if 477 < mouse[0] < 534 and 359 < mouse[1] < 535:
                     levers.append('1')
-                    print("1")
+                    R = True
                 
                 if 617 < mouse[0] < 702 and 361 < mouse[1] < 537:
                     levers.append('2')
-                    print("2")
+                    Y = True
 
                 if 785 < mouse[0] < 868 and 361 < mouse[1] < 532:
                     levers.append('3')
-                    print("3")
+                    G = True
 
         if len(levers) == 3:
+            R, Y, G = False, False, False
             levers_string = ''.join(levers)
             if levers_string == "213":
                 screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_board_pressed.png"), (screen_width, screen_height)), (0, 0))
@@ -734,7 +790,17 @@ def draw_game():
         wall_ud4.update()
         wall_lr4.update()
         device.update()
-    
+        desklvl2.update()
+        shelflvl2.update()
+        tablelvl2.update()
+        chairlvl2.update()
+        chairlvl23.update()
+        tree.update()
+        tree2.update()
+        tree3.update()
+        hologramlvl2.update()
+        tree4.update()
+        tree5.update()
     
     floor.update()
 
