@@ -379,6 +379,9 @@ starting_point = None
 sentence = []
 books = []
 
+is_quest_4_screen = False
+levers = []
+
 #functions
 def main():
     global level
@@ -637,6 +640,49 @@ def draw_game():
             floor.sprite.image = pygame.image.load('Assets/Images/backgrounds/Floor1.png').convert_alpha()
             floor.sprite.image = pygame.transform.scale(floor.sprite.image, (screen_width*4, screen_height*4))
 
+
+    global is_quest_4_screen
+
+    if board_col():
+        is_quest_4_screen = True
+
+    if is_quest_4_screen:
+        is_quest_4_screen = is_open()
+        screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_board.png"), (screen_width, screen_height)), (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN and len(levers) < 3:
+                mouse = pygame.mouse.get_pos()
+                if 477 < mouse[0] < 534 and 359 < mouse[1] < 535:
+                    levers.append('1')
+                    print("1")
+                
+                if 617 < mouse[0] < 702 and 361 < mouse[1] < 537:
+                    levers.append('2')
+                    print("2")
+
+                if 785 < mouse[0] < 868 and 361 < mouse[1] < 532:
+                    levers.append('3')
+                    print("3")
+
+        if len(levers) == 3:
+            levers_string = ''.join(levers)
+            if levers_string == "213":
+                screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_board_pressed.png"), (screen_width, screen_height)), (0, 0))
+                screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text4.png"), (800, 225)), (275, 60))
+            else:
+
+                if starting_point == None:
+                    starting_point = datetime.datetime.now()
+                
+                current_point = datetime.datetime.now()
+                if (current_point - starting_point).seconds < 5:
+                    for i in range(9):
+                        screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_board_pressed.png"), (screen_width, screen_height)), (0, 0))
+                        screen.blit(pygame.transform.scale(pygame.image.load("assets/images/texts/error_text.png"), (1000, 200)), (170, 88))  
+                else:
+                    starting_point = None
+                    levers.clear()
     ########################################################################
     paper1.update()
     paper2.update()
@@ -710,39 +756,11 @@ def hologram1_col():
         holocol = floor.sprite.rect.x < -800 and floor.sprite.rect.x > -1000 and (floor.sprite.rect.y == -100 or floor.sprite.rect.y == -20) and key_pressed[pygame.K_e]
         return holocol
 
+def board_col():
+    key_pressed = pygame.key.get_pressed()
+    boardcol = floor.sprite.rect.x < -1508 and floor.sprite.rect.x > -1848 and floor.sprite.rect.y == -796 and key_pressed[pygame.K_p]
+    return boardcol
+
 #call main function
 if __name__ == "__main__":
     main()
-
-is_quest_4_screen = False
-levers = []
-
-def board_col():
-    key_pressed = pygame.key.get_pressed()
-    boardcol = floor.sprite.rect.x < None and floor.sprite.rect.x > None and floor.sprite.rect.y == None and key_pressed[pygame.K_p]
-    return boardcol
-
-if board_col():
-    is_quest_4_screen = True
-
-if is_quest_4_screen:
-    is_quest_4_screen = is_open()
-    for event in pygame.event.get():
-        if event.type == pygame.MOUSEBUTTONDOWN and len(levers) < 3:
-            mouse = pygame.mouse.get_pos()
-            if None < mouse[0] < None and None < mouse[1] < None:
-                levers.append(1)
-            
-            if None < mouse[0] < None and None < mouse[1] < None:
-                levers.append(2)
-
-            if None < mouse[0] < None and None < mouse[1] < None:
-                levers.append(3)
-
-    if len(levers) == 3:
-        levers_string = ''.join(levers)
-        if levers_string == "213":
-            image = pygame.image.load("assets/images/backgrounds/lever_board.png")
-            screen.blit()
-        else:
-            pass
