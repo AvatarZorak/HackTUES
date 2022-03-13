@@ -319,6 +319,8 @@ telescope.add(Object("Assets/Images/objects/Telescope.png", 150, 990, 75, 45))
 hologram = pygame.sprite.GroupSingle()
 hologram.add(Object("Assets/Images/objects/hologram.png", -90, -580, 125, 75))
 
+#level2  ###################################################################
+
 list = [paper1, paper2, paper3]
 counter = 0
 is_quest_1_screen = False
@@ -329,7 +331,7 @@ starting_point = None
 sentence = []
 books = []
 
-#functions ###################################################################
+#functions
 def main():
     global level
     run = True
