@@ -19,9 +19,7 @@ object_scale = 1.5
 level = 1
 col = False
 try_move = []
-paper_complete = True
-book_complete = True
-computer_complete = True
+paper_complete, book_complete, computer_complete = True, True, True
 
 #ticks
 FPS = 60
@@ -328,6 +326,45 @@ hologram = pygame.sprite.GroupSingle()
 hologram.add(Object("Assets/Images/objects/hologram.png", -90, -580, 125, 75))
 
 #level2  ###################################################################
+desk = pygame.sprite.GroupSingle()
+desk.add(Object("Assets/Images/objects/desk.png", 700, -240, 80, 110)) 
+
+wall_ud = pygame.sprite.GroupSingle()
+wall_ud.add(Object("Assets/Images/objects/wall_ud.png", 1070, 270, 60, 845))
+
+wall_ud2 = pygame.sprite.GroupSingle()
+wall_ud2.add(Object("Assets/Images/objects/wall_ud.png", 1060, 1370, 60, 860))
+
+wall_ud3 = pygame.sprite.GroupSingle()
+wall_ud3.add(Object("Assets/Images/objects/wall_ud.png", 2320, 570, 60, 820))
+
+wall_ud4 = pygame.sprite.GroupSingle()
+wall_ud4.add(Object("Assets/Images/objects/wall_ud.png", 2320, 1310, 60, 820))
+
+wall_lr = pygame.sprite.GroupSingle()
+wall_lr.add(Object("Assets/Images/objects/wall_lr.png", 460, 350, 1410, 60))
+
+wall_lr2 = pygame.sprite.GroupSingle()
+wall_lr2.add(Object("Assets/Images/objects/wall_lr.png", 1660, 50, 910, 60))
+
+wall_lr3 = pygame.sprite.GroupSingle()
+wall_lr3.add(Object("Assets/Images/objects/wall_lr.png", 2890, 950, 525, 60))
+
+wall_lr4 = pygame.sprite.GroupSingle()
+wall_lr4.add(Object("Assets/Images/objects/wall_lr.png", 1660, 1310, 140, 60))
+
+shelf = pygame.sprite.GroupSingle()
+shelf.add(Object("Assets/Images/objects/shelf.png", 300 ,-300, 90, 300))
+
+table = pygame.sprite.GroupSingle()
+table.add(Object("Assets/Images/objects/table.png", 2050 ,230, 80, 80))
+
+tree = pygame.sprite.GroupSingle()
+tree.add(Object("Assets/Images/objects/1tree.png", -500, -200, 70, 70))
+
+hologram = pygame.sprite.GroupSingle()
+hologram.add(Object("Assets/Images/objects/hologram.png", -90, -580, 125, 75))
+
 
 list = [paper1, paper2, paper3]
 counter = 0
@@ -376,7 +413,6 @@ def dontmove(self): #initiate rollback #########################################
         reversemove(shelf.sprite)
         reversemove(desk2.sprite)
         reversemove(chair2.sprite)
-        reversemove(floor.sprite)
         reversemove(wall_up.sprite)
         reversemove(wall_down.sprite)
         reversemove(wall_left.sprite)
@@ -405,6 +441,17 @@ def dontmove(self): #initiate rollback #########################################
         reversemove(box4.sprite)
         reversemove(telescope.sprite)
         reversemove(hologram.sprite)
+    elif level == 2:
+        reversemove(wall_ud.sprite)
+        reversemove(wall_lr.sprite)
+        reversemove(wall_ud2.sprite)
+        reversemove(wall_ud3.sprite)
+        reversemove(wall_lr3.sprite)
+        reversemove(wall_lr2.sprite)
+        reversemove(wall_ud4.sprite)
+        reversemove(wall_lr4.sprite)
+        
+    reversemove(floor.sprite)
     
     reversemove(paper1.sprite)
     reversemove(paper2.sprite)
@@ -446,7 +493,7 @@ def draw_game():
 
     player.draw(screen)
     
-    if level == 1:
+    if level == 1: ########################################################################
         wall_left2.draw(screen)
         wall_right2.draw(screen)
         wall_up.draw(screen)
@@ -480,6 +527,15 @@ def draw_game():
         box4.draw(screen)
         telescope.draw(screen)
         hologram.draw(screen)
+    elif level == 2:
+        wall_ud.draw(screen)
+        wall_lr.draw(screen)
+        wall_ud2.draw(screen)
+        wall_lr3.draw(screen)
+        wall_ud3.draw(screen)
+        wall_lr2.draw(screen)
+        wall_ud4.draw(screen)
+        wall_lr4.draw(screen)
     
     for i in range(counter):
         image = pygame.image.load("assets/images/papers/paper.png")
@@ -571,7 +627,10 @@ def draw_game():
     
     if hologram1_col():
             level = 2
-            print("test")
+            floor.sprite.rect.x = -900
+            floor.sprite.rect.y = -600
+            floor.sprite.image = pygame.image.load('Assets/Images/backgrounds/Floor1.png').convert_alpha()
+            floor.sprite.image = pygame.transform.scale(floor.sprite.image, (screen_width*4, screen_height*4))
 
     ########################################################################
     paper1.update()
@@ -614,6 +673,16 @@ def draw_game():
         telescope.update()
         box4.update()
         hologram.update()
+    elif level == 2:
+        wall_ud.update()
+        wall_lr.update()
+        wall_ud2.update()
+        wall_lr3.update()
+        wall_ud3.update()
+        wall_lr2.update()
+        wall_ud4.update()
+        wall_lr4.update()
+    
     
     floor.update()
 
