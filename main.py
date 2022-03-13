@@ -19,8 +19,9 @@ object_scale = 1.5
 level = 1
 col = False
 try_move = []
-paper_complete, book_complete, computer_complete = True, True, True
+paper_complete, book_complete, computer_complete = False,False,False
 R, Y, G = False, False, False
+device_complete = False
 
 #ticks
 FPS = 60
@@ -724,6 +725,7 @@ def draw_game():
             R, Y, G = False, False, False
             levers_string = ''.join(levers)
             if levers_string == "213":
+                device_complete = True
                 screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/levers_board_pressed.png"), (screen_width, screen_height)), (0, 0))
                 screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text4.png"), (800, 225)), (275, 60))
             else:
