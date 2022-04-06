@@ -8,29 +8,32 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/menu_background.png"), (screen_width, screen_height)), (0, 0))
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, x, y, image_name):
+    def __init__(self, x, y, image_name, scale):
         super().__init__()
         self.x = x
         self.y = y
         self.image_name = image_name
+        self.scale = scale
         self.image = pygame.image.load(f"{self.image_name}.png")
+        self.width = self.image.get_width() * self.scale
+        self.height = self.image.get_height() * self.scale
 
     def change_button(self):
         mouse = pygame.mouse.get_pos()
         if self.x <= mouse[0] <= self.x + self.image.get_width() and self.y <= mouse[1] <= self.y  + self.image.get_height():
             self.image = pygame.image.load(f"{self.image_name}_pressed.png")
-            screen.blit(self.image, (self.x, self.y))
+            screen.blit(pygame.transform.scale(self.image, (self.width, self.height)), (self.x, self.y))
         else:
             self.image = pygame.image.load(f"{self.image_name}.png")
-            screen.blit(self.image, (self.x, self.y))
+            screen.blit(pygame.transform.scale(self.image, (self.width, self.height)), (self.x, self.y))
         
     def check_clicked(self):
         mouse = pygame.mouse.get_pos()
         if self.x <= mouse[0] <= self.x + self.image.get_width() and self.y <= mouse[1] <= self.y  + self.image.get_height():
             return True
 
-play_button = Button(screen_width/2 - 50, screen_height/2, "assets/images/buttons/play_button")
-quit_button = Button(screen_width/2 - 50, screen_height/2+100, "assets/images/buttons/quit_button")
+play_button = Button(screen_width/2 - 50, screen_height/2 + 100, "assets/images/buttons/play_button", 1)
+quit_button = Button(screen_width/2 - 50, screen_height/2+200, "assets/images/buttons/quit_button", 1)
 
 def menu():
     mouse = pygame.mouse.get_pos()
@@ -50,5 +53,6 @@ def menu():
 
             if quit_button.check_clicked():
                 exit(0)
+                
     pygame.display.update()
     return True
