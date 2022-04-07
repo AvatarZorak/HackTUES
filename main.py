@@ -19,9 +19,9 @@ object_scale = 1.5
 level = 1
 col = False
 try_move = []
-paper_complete, book_complete, computer_complete = True, True, True
+paper_complete, book_complete, computer_complete = False, False, False
 R, Y, G = False, False, False
-device_complete = True
+device_complete = False
 volume_strength = 0.2
 controls = True
 
@@ -742,6 +742,8 @@ def draw_game():
                     levers.append('3')
                     G = True
 
+        global device_complete
+
         if len(levers) == 3:
             R, Y, G = False, False, False
             levers_string = ''.join(levers)
@@ -785,7 +787,7 @@ def draw_game():
     global options
     global controls_options
 
-    if key == pygame.K_SPACE:
+    if key == pygame.K_m and is_quest_2_screen == False:
         options = True
 
     if options:
@@ -925,7 +927,7 @@ def blit_controls():
     screen.blit(pygame.transform.scale(pygame.image.load("assets/images/controls/a.png"), (40, 40)), (player.sprite.rect.x - 80, player.sprite.rect.y))
     screen.blit(pygame.transform.scale(pygame.image.load("assets/images/controls/s.png"), (40, 40)), (player.sprite.rect.x, player.sprite.rect.y + 80))
     screen.blit(pygame.transform.scale(pygame.image.load("assets/images/controls/d.png"), (40, 40)), (player.sprite.rect.x + 80, player.sprite.rect.y))
-    screen.blit(pygame.transform.scale(pygame.image.load("assets/images/controls/space.png"), (250, 40)), (800, 500))
+    screen.blit(pygame.transform.scale(pygame.image.load("assets/images/controls/m.png"), (250, 40)), (800, 500))
     screen.blit(pygame.transform.scale(pygame.image.load("assets/images/controls/esc.png"), (350, 40)), (800, 550))
 
 def blit_volume():
