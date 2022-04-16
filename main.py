@@ -19,9 +19,9 @@ object_scale = 1.5
 level = 1
 col = False
 try_move = []
-paper_complete, book_complete, computer_complete = False, False, False
+paper_complete, book_complete, computer_complete = True, True, True
 R, Y, G = False, False, False
-device_complete = False
+device_complete = True
 volume_strength = 0.2
 controls = True
 
@@ -213,9 +213,27 @@ class Paper(pygame.sprite.Sprite):
         col = pygame.sprite.collide_rect(self, player.sprite)
         return col
 
+class Tip:
+    def __init__(self, tip, x, y):
+        super().__init__()
+        self.tip_icon = pygame.transform.scale(pygame.image.load("assets/images/tips/tip_icon.png"), (50, 50))
+        self.tip = pygame.image.load(f"assets/images/tips/{tip}.png")
+        self.x = x
+        self.y = y
+    
+    def draw(self):
+        screen.blit(self.tip_icon, (self.x, self.y))
+
+    def check_hovered(self):
+        (self.mouse_x, self.mouse_y) = pygame.mouse.get_pos()
+
+        if (self.mouse_x > self.x and self.mouse_x < self.x + self.tip_icon.get_width()) and (self.mouse_y > self.y and self.mouse_y < self.y + self.tip_icon.get_height()):
+            screen.blit(self.tip, (self.x + 50, self.y))
+
 paper_positions = [[0, 0], [100, 100], [200, 200], [500, 600], [372, 536], [1123, -488], [100, -500], [-100, 860], [1300, 860], [1700, 860]]
 
 #definition of objects
+
 #level 1
 player = pygame.sprite.GroupSingle()
 player.add(Player())
@@ -402,6 +420,15 @@ hologramlvl2 = pygame.sprite.GroupSingle()
 hologramlvl2.add(Object("Assets/Images/objects/hologram.png", oc.hologramlvl2_x, 880, 125, 75))
 hologramlvl2.sprite.image = pygame.transform.flip(pygame.transform.scale(pygame.image.load('Assets/Images/objects/hologram.png').convert_alpha(), (125, 205 )), True, False)
 
+tip_paper = Tip("tip_paper", 20, 60)
+
+tip_quest2 = Tip("tip_quest2", 20, 20)
+tip_quest3 = Tip("tip_quest3", 20, 20)
+tip_quest4 = Tip("tip_quest4", 20, 20)
+
+tip_hologram1 = Tip("tip_hologram", 20, 60)
+tip_hologram2 = Tip("tip_hologram", 20, 20)
+
 options = False
 controls_options = False
 
@@ -411,6 +438,7 @@ is_quest_1_screen = False
 is_quest_2_screen = False
 is_quest_2_screen_completed = False
 starting_point = None
+starting_point_paper = None
 
 sentence = []
 books = []
@@ -524,6 +552,12 @@ def is_open():
         return False
     return True
 
+counter_prev = 0
+starting_point_screen2 = None
+starting_point_screen3 = None
+starting_point_hologram1 = None
+starting_point_hologram2 = None
+
 #display
 def draw_game():
     global paper_complete, book_complete, computer_complete, level
@@ -535,6 +569,7 @@ def draw_game():
     floor.draw(screen)
 
     global counter
+    global counter_prev
 
     if paper1.sprite.check_col() and key == pygame.K_e and paper1 in list:
         list.remove(paper1)
@@ -547,7 +582,6 @@ def draw_game():
     if paper3.sprite.check_col() and key == pygame.K_e and paper3 in list:
         list.remove(paper3)
         counter += 1
-
 
     for i in list:
         i.draw(screen)    
@@ -612,32 +646,44 @@ def draw_game():
     
     paper_col()
 
-    for i in range(counter):
-        image = pygame.image.load("assets/images/papers/paper.png")
-        screen.blit(pygame.transform.scale(image, (50, 50)), (i * 50, 0))
+    if level == 1:
+        for i in range(counter):
+            image = pygame.image.load("assets/images/papers/paper.png")
+            screen.blit(pygame.transform.scale(image, (50, 50)), (i * 50, 0))
 
-    if counter == 3:
-        screen.blit(pygame.transform.scale(pygame.image.load("assets/images/controls/q.png"), (40, 40)), (160, 5))
+        if counter == 3:
+            screen.blit(pygame.transform.scale(pygame.image.load("assets/images/controls/q.png"), (40, 40)), (160, 5))
+
+    global starting_point_paper
+
+    if starting_point_paper == None:
+        starting_point_paper = datetime.datetime.now()
+    
+    current_point_paper = datetime.datetime.now()
+    if (current_point_paper - starting_point_paper).seconds > 10 and len(list) != 0:
+        tip_paper.draw()
+        tip_paper.check_hovered()
+
+    elif len(list) == 0:
+        starting_point_paper = None
 
     global is_quest_1_screen
     global is_quest_2_screen
 
-    if len(list) == 0 and key == pygame.K_q:
+    if len(list) == 0 and key == pygame.K_q and level == 1:
         is_quest_1_screen = True
         paper_complete = True
 
-    if is_quest_1_screen:
+    if is_quest_1_screen and level == 1:
         is_quest_1_screen = is_open()
         screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text.png"), (screen_width, screen_height)), (0, 0))
 
     if desk_col() == True:
         is_quest_2_screen = True
-        computer_complete = True
         
     if is_quest_2_screen == True:
         is_quest_2_screen = is_open()
         screen.blit(pygame.transform.scale(pygame.image.load("assets/images/backgrounds/quest_2.png"), (screen_width, screen_height)), (0, 0))
-
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -656,6 +702,7 @@ def draw_game():
             if sentence_string == "explore the cosmos":
                 if is_open():
                     screen.blit(pygame.transform.scale(pygame.image.load("assets/images/papers/custom_text2.png"), (screen_width-200, screen_height-200)), (100, 100))
+                    computer_complete = True
             else:
                 global starting_point
 
@@ -668,6 +715,20 @@ def draw_game():
                 else:
                     starting_point = None
                     sentence.clear()
+
+        global starting_point_screen2
+
+        if starting_point_screen2 == None:
+            starting_point_screen2 = datetime.datetime.now()
+        
+        current_point_screen2 = datetime.datetime.now()
+        if (current_point_screen2 - starting_point_screen2).seconds > 10 and computer_complete == False:
+            tip_quest2.draw()
+            tip_quest2.check_hovered()
+        
+        if computer_complete:
+            starting_point_screen2 = None
+
 
     if shelf_col():
         for event in pygame.event.get():
@@ -701,7 +762,33 @@ def draw_game():
                 else:
                     starting_point = None
                     books.clear()
+
+        global starting_point_screen3
+
+        if starting_point_screen3 == None:
+            starting_point_screen3 = datetime.datetime.now()
+        
+        current_point_screen3 = datetime.datetime.now()
+        if (current_point_screen3 - starting_point_screen3).seconds > 10 and book_complete == False:
+            tip_quest3.draw()
+            tip_quest3.check_hovered()
+
+        if book_complete:
+            starting_point_screen3 = None
+
+    global starting_point_hologram1
+
+    if starting_point_hologram1 == None:
+        starting_point_hologram1 = datetime.datetime.now()
     
+    current_point_hologram1 = datetime.datetime.now()
+    if (current_point_hologram1 - starting_point_hologram1).seconds > 10 and level == 1 and paper_complete == computer_complete == book_complete == True:
+        tip_hologram1.draw()
+        tip_hologram1.check_hovered()
+    
+    if level != 1:
+        starting_point_hologram1 = None
+
     if hologram1_col():
             level = 2
             floor.sprite.rect.x = -900
@@ -765,10 +852,31 @@ def draw_game():
                     starting_point = None
                     levers.clear()
 
+        if starting_point_screen == None:
+            starting_point_screen = datetime.datetime.now()
+        
+        current_point_screen = datetime.datetime.now()
+        if (current_point_screen - starting_point_screen).seconds > 7 and device_complete == False:
+            tip_quest4.draw()
+            tip_quest4.check_hovered()
+
     #print(floor.sprite.rect.x, floor.sprite.rect.y)
 
     #pygame.draw.rect(screen, (255, 0, 0), hologramlvl2.sprite, 2)
     
+    global starting_point_hologram2
+
+    if starting_point_hologram2 == None:
+        starting_point_hologram2 = datetime.datetime.now()
+    
+    current_point_hologram2 = datetime.datetime.now()
+    if (current_point_hologram2 - starting_point_hologram2).seconds > 10 and level == 2 and device_complete:
+        tip_hologram2.draw()
+        tip_hologram2.check_hovered()
+    
+    if level != 2:
+        starting_point_hologram2 = None
+
     global end
 
     if hologram2_col():
