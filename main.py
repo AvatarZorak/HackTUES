@@ -19,9 +19,9 @@ object_scale = 1.5
 level = 1
 col = False
 try_move = []
-paper_complete, book_complete, computer_complete = True, True, True
+paper_complete, book_complete, computer_complete = False, False, False
 R, Y, G = False, False, False
-device_complete = True
+device_complete = False
 volume_strength = 0.2
 controls = True
 
@@ -423,7 +423,7 @@ hologramlvl2.sprite.image = pygame.transform.flip(pygame.transform.scale(pygame.
 tip_paper = Tip("tip_paper", 20, 60)
 
 tip_quest2 = Tip("tip_quest2", 20, 20)
-tip_quest3 = Tip("tip_quest3", 20, 20)
+tip_quest3 = Tip("tip_quest3", 20, 120)
 tip_quest4 = Tip("tip_quest4", 20, 20)
 
 tip_hologram1 = Tip("tip_hologram", 20, 60)
